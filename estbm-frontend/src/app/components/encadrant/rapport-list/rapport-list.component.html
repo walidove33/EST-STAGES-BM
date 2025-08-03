@@ -20,15 +20,26 @@
       </div>
     </div>
 
-    <div class="filters-section animate-slideInFromLeft">
-      <div class="filters-card">
-        <div class="filters-header">
-          <h3>
-            <i class="bi bi-funnel me-2"></i>
-            Filtres et recherche
-          </h3>
-        </div>
-        <div class="filters-body">
+
+
+
+<!-- ... contenu existant ... -->
+
+<div class="filters-section animate-slideInFromLeft">
+  <div class="filters-card">
+    <div class="filters-header">
+      <h3>
+        <i class="bi bi-funnel me-2"></i>
+        Filtres et recherche
+      </h3>
+      <button class="btn btn-sm btn-outline-secondary" (click)="resetFilters()">
+        <i class="bi bi-arrow-clockwise me-1"></i>
+        Réinitialiser
+      </button>
+    </div>
+    <div class="filters-body">
+      <div class="row">
+        <div class="col-md-6">
           <div class="filter-group">
             <label class="filter-label">
               <i class="bi bi-search me-2"></i>
@@ -58,6 +69,56 @@
             </select>
           </div>
           
+          <div class="filter-group">
+            <label class="filter-label">
+              <i class="bi bi-building me-2"></i>
+              Département
+            </label>
+            <select 
+              class="filter-select"
+              [(ngModel)]="departementFilter"
+              (change)="filterRapports()">
+              <option value="">Tous les départements</option>
+              <option *ngFor="let dept of departementOptions" [value]="dept">
+                {{ dept }}
+              </option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="col-md-6">
+          <div class="filter-group">
+            <label class="filter-label">
+              <i class="bi bi-people me-2"></i>
+              Groupe de classe
+            </label>
+            <select 
+              class="filter-select"
+              [(ngModel)]="classeGroupeFilter"
+              (change)="filterRapports()">
+              <option value="">Tous les groupes</option>
+              <option *ngFor="let groupe of classeGroupeOptions" [value]="groupe">
+                {{ groupe }}
+              </option>
+            </select>
+          </div>
+          
+          <div class="filter-group">
+            <label class="filter-label">
+              <i class="bi bi-calendar-range me-2"></i>
+              Année scolaire
+            </label>
+            <select 
+              class="filter-select"
+              [(ngModel)]="anneeScolaireFilter"
+              (change)="filterRapports()">
+              <option value="">Toutes les années</option>
+              <option *ngFor="let annee of anneeScolaireOptions" [value]="annee">
+                {{ annee }}
+              </option>
+            </select>
+          </div>
+          
           <div class="filter-stats">
             <span class="stats-text">
               {{ filteredRapports.length }} rapport(s) trouvé(s)
@@ -66,6 +127,15 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- ... reste du contenu ... -->
+
+
+
+
+
 
     <div class="reports-content animate-slideInFromRight">
       <div class="content-card">

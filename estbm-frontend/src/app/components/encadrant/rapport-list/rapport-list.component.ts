@@ -231,6 +231,12 @@ export class RapportListComponent implements OnInit {
   loading = false
   searchTerm = ""
   statusFilter = ""
+   departementFilter = ""
+  classeGroupeFilter = ""
+  anneeScolaireFilter = ""
+  departementOptions: string[] = []
+  classeGroupeOptions: string[] = []
+  anneeScolaireOptions: string[] = []
 
   commentairesExistants: Record<number, CommentaireRapport[]> = {}
   nouveauCommentaire: { [rapportId: number]: string } = {}
@@ -245,13 +251,16 @@ export class RapportListComponent implements OnInit {
   }
 
   private loadRapports(): void {
-    this.loading = true
+   this.loading = true
     this.stageService.getRapportsForEncadrant().subscribe({
       next: (rapports: RapportDetails[]) => {
         this.rapports = rapports
         this.filteredRapports = [...rapports]
         this.loading = false
         this.loadCommentairesExistants()
+        
+        // Initialiser les options des filtres
+        this.initializeFilterOptions()
       },
       error: (err) => {
         this.loading = false
@@ -260,6 +269,14 @@ export class RapportListComponent implements OnInit {
       }
     })
   }
+
+   private initializeFilterOptions(): void {
+    // Récupérer les valeurs uniques pour chaque filtre
+    this.departementOptions = [...new Set(this.rapports.map(r => r.departementNom))].sort()
+    this.classeGroupeOptions = [...new Set(this.rapports.map(r => r.classeGroupeNom))].sort()
+    this.anneeScolaireOptions = [...new Set(this.rapports.map(r => r.anneeScolaireValeur))].sort()
+  }
+
 
   private loadCommentairesExistants(): void {
     this.rapports.forEach(r => {
@@ -275,16 +292,34 @@ export class RapportListComponent implements OnInit {
         })
     })
   }
-
-  filterRapports(): void {
+filterRapports(): void {
     this.filteredRapports = this.rapports.filter(rapport => {
       const matchesSearch = !this.searchTerm || 
         rapport.nomFichier.toLowerCase().includes(this.searchTerm.toLowerCase())
 
       const matchesStatus = !this.statusFilter || rapport.etat === this.statusFilter
+      
+      const matchesDepartement = !this.departementFilter || 
+        rapport.departementNom === this.departementFilter
+        
+      const matchesClasseGroupe = !this.classeGroupeFilter || 
+        rapport.classeGroupeNom === this.classeGroupeFilter
+        
+      const matchesAnneeScolaire = !this.anneeScolaireFilter || 
+        rapport.anneeScolaireValeur === this.anneeScolaireFilter
 
-      return matchesSearch && matchesStatus
+      return matchesSearch && matchesStatus && matchesDepartement && 
+             matchesClasseGroupe && matchesAnneeScolaire
     })
+  }
+
+   resetFilters(): void {
+    this.searchTerm = ""
+    this.statusFilter = ""
+    this.departementFilter = ""
+    this.classeGroupeFilter = ""
+    this.anneeScolaireFilter = ""
+    this.filterRapports()
   }
 
   envoyerCommentaire(rapport: RapportDetails): void {
