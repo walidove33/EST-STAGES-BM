@@ -542,7 +542,7 @@ import  { AuthService } from "../../../services/auth.service"
 import  { StageService } from "../../../services/stage.service"
 import  { UserService } from "../../../services/user.service"
 import  { NotificationService } from "../../../services/notification.service"
-import { NavbarComponent } from "../../shared/navbar/navbar.component"
+import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
 import { NotificationComponent } from "../../../shared/components/notification/notification.component"
 import { CardComponent } from "../../../shared/components/card/card.component"
 import { LoadingComponent } from "../../../shared/components/loading/loading.component"

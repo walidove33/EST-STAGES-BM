@@ -6,7 +6,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { StageService } from '../../../services/stage.service';
 import { UserService } from '../../../services/user.service';
 import { NotificationService } from '../../../services/notification.service';
-import { NavbarComponent } from '../../shared/navbar/navbar.component';
+import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
 import { LoadingComponent } from '../../../shared/components/loading/loading.component';
 import { 
   PlanificationSoutenanceResponse, 

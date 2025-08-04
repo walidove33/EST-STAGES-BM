@@ -8,7 +8,7 @@ import { Router, RouterModule } from '@angular/router';
 import { StageService } from '../../../services/stage.service';
 import { AuthService } from '../../../services/auth.service';
 import { ToastService } from '../../../services/toast.service';
-import { NavbarComponent } from '../../shared/navbar/navbar.component';
+import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
 import { StageRequest } from '../../../models/stage.model';
 
 @Component({

@@ -4,7 +4,7 @@ import { RouterModule } from "@angular/router"
 import { FormsModule } from "@angular/forms"
 import  { StageService } from "../../../services/stage.service"
 import  { ToastService } from "../../../services/toast.service"
-import { NavbarComponent } from "../../shared/navbar/navbar.component"
+import { NavbarComponent } from "../../../shared/components/navbar/navbar.component"
 import type { Stage } from "../../../models/stage.model"
 
 @Component({

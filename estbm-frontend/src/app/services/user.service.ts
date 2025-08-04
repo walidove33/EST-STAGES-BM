@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // import { Injectable } from "@angular/core"
 // import  { HttpClient } from "@angular/common/http"
 // import { type Observable, throwError } from "rxjs"
@@ -8,15 +7,7 @@
 // import { CreateEncadrantRequest } from '../models/user.model';
 
 
-=======
-import { Injectable } from "@angular/core"
-import { HttpClient } from "@angular/common/http"
-import { Observable, throwError, timer } from "rxjs"
-import { catchError, tap, switchMap } from "rxjs/operators"
-import { User } from "../models/user.model"
-import { CreateAdminRequest, CreateEncadrantRequest } from '../models/user.model'
-import { NotificationService } from "./notification.service"
->>>>>>> ab67ea47660ed6a72166772b3f66c5dcbf39015e
+
 
 // @Injectable({
 //   providedIn: "root",
@@ -805,56 +796,36 @@ export class UserService {
 
   // ==================== PERFORMANCE MONITORING ====================
 
-<<<<<<< HEAD
-   getServiceHealth(): Observable<{ status: string; responseTime: number }> {
-    const startTime = Date.now();
-    return this.http.get<{ status: string }>(`${this.baseUrl}/health`).pipe(
-      map((response) => ({
-        status: response.status,
-        responseTime: Date.now() - startTime
-      })),
-=======
-  getServiceHealth(): Observable<{ status: string, responseTime: number }> {
-    const startTime = Date.now()
+
+   getServiceHealth(): Observable<{ status: string, responseTime: number }> {
+  const startTime = Date.now();
+  
+  return this.http.get<{ status: string }>(`${this.baseUrl}/health`).pipe(
+    map((response) => ({
+      ...response,
+      responseTime: Date.now() - startTime
+    })),
     
-    return this.http.get<{ status: string }>(`${this.baseUrl}/health`).pipe(
-      map((response) => ({
-        ...response,
-        responseTime: Date.now() - startTime
-      })),
-      
->>>>>>> ab67ea47660ed6a72166772b3f66c5dcbf39015e
-      tap((health) => {
-        if (health.responseTime > 2000) {
-          this.notificationService.warning(
-            'Performance dégradée',
-            `Temps de réponse élevé: ${health.responseTime}ms`
-<<<<<<< HEAD
-          );
-        }
-      }),
-=======
-          )
-        }
-      }),
-      
->>>>>>> ab67ea47660ed6a72166772b3f66c5dcbf39015e
-      catchError((error) => {
-        this.notificationService.error(
-          'Service indisponible',
-          'Le service utilisateurs ne répond pas'
-<<<<<<< HEAD
+    tap((health) => {
+      if (health.responseTime > 2000) {
+        this.notificationService.warning(
+          'Performance dégradée',
+          `Temps de réponse élevé: ${health.responseTime}ms`
         );
-        return throwError(() => error);
-      })
-    );
-=======
-        )
-        return throwError(() => error)
-      })
-    )
->>>>>>> ab67ea47660ed6a72166772b3f66c5dcbf39015e
-  }
+      }
+    }),
+    
+    catchError((error) => {
+      this.notificationService.error(
+        'Service indisponible',
+        'Le service utilisateurs ne répond pas'
+      );
+      return throwError(() => error);
+    })
+  );
+}
+
+  
 
   // Clear service cache and refresh data
   refreshAllData(): Observable<any> {

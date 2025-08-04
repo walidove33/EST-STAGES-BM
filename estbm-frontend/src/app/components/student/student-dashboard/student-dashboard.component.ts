@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 
 
 
@@ -648,8 +647,6 @@
 // }
 
 
-=======
->>>>>>> ab67ea47660ed6a72166772b3f66c5dcbf39015e
 import { Component, type OnInit, type OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from "@angular/core"
 import { CommonModule } from "@angular/common"
 import { RouterModule } from "@angular/router"
@@ -658,7 +655,7 @@ import { Subject, takeUntil, timer } from "rxjs"
 import { StageService } from "../../../services/stage.service"
 import { AuthService } from "../../../services/auth.service"
 import { NotificationService } from "../../../services/notification.service"
-import { NavbarComponent } from "../../shared/navbar/navbar.component"
+import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
 import { CardComponent } from "../../../shared/components/card/card.component"
 import { LoadingComponent } from "../../../shared/components/loading/loading.component"
 import {

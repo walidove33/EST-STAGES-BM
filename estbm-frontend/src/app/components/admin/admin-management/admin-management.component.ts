@@ -8,7 +8,7 @@ import { RouterModule } from '@angular/router';
 import { UserService } from '../../../services/user.service';
 import { NotificationService } from '../../../services/notification.service';
 import { NotificationComponent } from '../../../shared/components/notification/notification.component';
-import { NavbarComponent } from '../../shared/navbar/navbar.component';
+import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
 import { User, CreateAdminRequest } from '../../../models/user.model';
 
 @Component({

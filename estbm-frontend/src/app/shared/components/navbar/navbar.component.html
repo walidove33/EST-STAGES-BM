@@ -1,143 +1,302 @@
-<nav class="estbm-navbar">
+<!-- Ultra Professional Navbar -->
+<nav class="ultra-navbar" 
+     [class.scrolled]="isScrolled" 
+     [class.mobile-open]="mobileMenuOpen"
+     #navbar>
+  
+  <!-- Navbar Background Effects -->
+  <div class="navbar-bg-effects">
+    <div class="bg-gradient"></div>
+    <div class="bg-pattern"></div>
+    <div class="bg-blur"></div>
+  </div>
+
   <div class="navbar-container">
     <!-- Brand Section -->
-    <div class="navbar-brand">
-      <div class="brand-logo">
-        <img src="/assets/logo.png" alt="EST Béni Mellal" class="logo-img" />
+    <div class="navbar-brand" [routerLink]="getDashboardRoute()">
+      <div class="brand-logo-container">
+        <div class="logo-wrapper">
+          <img src="/assets/logo.png" alt="EST Béni Mellal" class="logo-img" />
+          <div class="logo-fallback">
+            <i class="bi bi-mortarboard-fill"></i>
+          </div>
+          <div class="logo-glow"></div>
+        </div>
       </div>
-      <div class="brand-text">
-        <h1>EST Béni Mellal</h1>
-        <span>Gestion des Stages</span>
+      <div class="brand-content">
+        <h1 class="brand-title">EST Béni Mellal</h1>
+        <span class="brand-subtitle">Gestion des Stages</span>
       </div>
+      <div class="brand-accent"></div>
     </div>
 
     <!-- Desktop Navigation -->
-    <div class="navbar-nav" [class.active]="mobileMenuOpen">
-      <a [routerLink]="getDashboardRoute()" 
-         routerLinkActive="active" 
-         class="nav-link"
-         (click)="closeMenus()">
-        <i class="bi bi-speedometer2"></i>
-        <span>Tableau de bord</span>
-      </a>
-      
-      <!-- Student Links -->
-      <ng-container *ngIf="currentUser?.role === 'ETUDIANT'">
-        <a routerLink="/student/new-stage" 
-           routerLinkActive="active" 
-           class="nav-link"
-           (click)="closeMenus()">
-          <i class="bi bi-plus-circle"></i>
-          <span>Nouvelle demande</span>
-        </a>
+    <div class="navbar-navigation" [class.mobile-active]="mobileMenuOpen">
+      <div class="nav-overlay" (click)="closeMenus()"></div>
+      <div class="nav-content">
         
-        <a routerLink="/student/stages" 
-           routerLinkActive="active" 
-           class="nav-link"
-           (click)="closeMenus()">
-          <i class="bi bi-briefcase"></i>
-          <span>Mes stages</span>
-        </a>
-      </ng-container>
-      
-      <!-- Encadrant Links -->
-      <ng-container *ngIf="currentUser?.role === 'ENCADRANT'">
-        <a routerLink="/encadrant/rapports" 
-           routerLinkActive="active" 
-           class="nav-link"
-           (click)="closeMenus()">
-          <i class="bi bi-file-earmark-text"></i>
-          <span>Rapports</span>
-        </a>
+        <!-- Main Dashboard Link -->
+        <div class="nav-section primary-section">
+          <a [routerLink]="getDashboardRoute()" 
+             routerLinkActive="active" 
+             class="nav-link primary-link"
+             (click)="closeMenus()">
+            <div class="nav-icon">
+              <i class="bi bi-speedometer2"></i>
+            </div>
+            <span class="nav-text">Tableau de bord</span>
+            <div class="nav-glow"></div>
+          </a>
+        </div>
         
-        <a routerLink="/encadrant/soutenances" 
-           routerLinkActive="active" 
-           class="nav-link"
-           (click)="closeMenus()">
-          <i class="bi bi-calendar-check"></i>
-          <span>Soutenances</span>
-        </a>
-      </ng-container>
-      
-      <!-- Admin Links -->
-      <ng-container *ngIf="currentUser?.role === 'ADMIN'">
-        <a routerLink="/admin/encadrants" 
-           routerLinkActive="active" 
-           class="nav-link"
-           (click)="closeMenus()">
-          <i class="bi bi-people"></i>
-          <span>Encadrants</span>
-        </a>
+        <!-- Role-based Navigation -->
+        <!-- Student Links -->
+        <div class="nav-section student-section" *ngIf="currentUser?.role === 'ETUDIANT'">
+          <div class="nav-section-header">
+            <span class="section-label">Étudiant</span>
+            <div class="section-line"></div>
+          </div>
+          
+          <a routerLink="/student/new-stage" 
+             routerLinkActive="active" 
+             class="nav-link"
+             (click)="closeMenus()">
+            <div class="nav-icon">
+              <i class="bi bi-plus-circle-fill"></i>
+            </div>
+            <span class="nav-text">Nouvelle demande</span>
+            <div class="nav-indicator"></div>
+          </a>
+          
+          <a routerLink="/student/stages" 
+             routerLinkActive="active" 
+             class="nav-link"
+             (click)="closeMenus()">
+            <div class="nav-icon">
+              <i class="bi bi-briefcase-fill"></i>
+            </div>
+            <span class="nav-text">Mes stages</span>
+            <div class="nav-indicator"></div>
+          </a>
+          
+          <a routerLink="/student/soutenances" 
+             routerLinkActive="active" 
+             class="nav-link"
+             (click)="closeMenus()">
+            <div class="nav-icon">
+              <i class="bi bi-calendar-check-fill"></i>
+            </div>
+            <span class="nav-text">Mes Soutenances</span>
+            <div class="nav-indicator"></div>
+          </a>
+        </div>
         
-        <a routerLink="/admin/admins" 
-           routerLinkActive="active" 
-           class="nav-link"
-           (click)="closeMenus()">
-          <i class="bi bi-shield-check"></i>
-          <span>Administrateurs</span>
-        </a>
+        <!-- Supervisor Links -->
+        <div class="nav-section supervisor-section" *ngIf="currentUser?.role === 'ENCADRANT'">
+          <div class="nav-section-header">
+            <span class="section-label">Encadrement</span>
+            <div class="section-line"></div>
+          </div>
+          
+          <a routerLink="/encadrant/rapports" 
+             routerLinkActive="active" 
+             class="nav-link"
+             (click)="closeMenus()">
+            <div class="nav-icon">
+              <i class="bi bi-file-earmark-text-fill"></i>
+            </div>
+            <span class="nav-text">Rapports</span>
+            <div class="nav-indicator"></div>
+          </a>
+          
+          <a routerLink="/encadrant/soutenances" 
+             routerLinkActive="active" 
+             class="nav-link"
+             (click)="closeMenus()">
+            <div class="nav-icon">
+              <i class="bi bi-calendar-event-fill"></i>
+            </div>
+            <span class="nav-text">Soutenances</span>
+            <div class="nav-indicator"></div>
+          </a>
+        </div>
         
-        <a routerLink="/admin/planifications" 
-           routerLinkActive="active" 
-           class="nav-link"
-           (click)="closeMenus()">
-          <i class="bi bi-calendar-event"></i>
-          <span>Planifications</span>
-        </a>
-      </ng-container>
-      
-      <!-- Student Links -->
-      <ng-container *ngIf="currentUser?.role === 'ETUDIANT'">
-        <a routerLink="/student/soutenances" 
-           routerLinkActive="active" 
-           class="nav-link"
-           (click)="closeMenus()">
-          <i class="bi bi-calendar-check"></i>
-          <span>Mes Soutenances</span>
-        </a>
-      </ng-container>
+        <!-- Admin Links -->
+        <div class="nav-section admin-section" *ngIf="currentUser?.role === 'ADMIN'">
+          <div class="nav-section-header">
+            <span class="section-label">Administration</span>
+            <div class="section-line"></div>
+          </div>
+          
+          <a routerLink="/admin/encadrants" 
+             routerLinkActive="active" 
+             class="nav-link"
+             (click)="closeMenus()">
+            <div class="nav-icon">
+              <i class="bi bi-people-fill"></i>
+            </div>
+            <span class="nav-text">Encadrants</span>
+            <div class="nav-indicator"></div>
+          </a>
+          
+          <a routerLink="/admin/admins" 
+             routerLinkActive="active" 
+             class="nav-link"
+             (click)="closeMenus()">
+            <div class="nav-icon">
+              <i class="bi bi-shield-check-fill"></i>
+            </div>
+            <span class="nav-text">Administrateurs</span>
+            <div class="nav-indicator"></div>
+          </a>
+          
+          <a routerLink="/admin/planifications" 
+             routerLinkActive="active" 
+             class="nav-link"
+             (click)="closeMenus()">
+            <div class="nav-icon">
+              <i class="bi bi-calendar-week-fill"></i>
+            </div>
+            <span class="nav-text">Planifications</span>
+            <div class="nav-indicator"></div>
+          </a>
+        </div>
+      </div>
     </div>
 
-    <!-- User Menu -->
+    <!-- User Profile Section -->
     <div class="navbar-user">
-      <div class="user-info" (click)="toggleUserMenu()">
-        <div class="user-avatar">
-          <i class="bi bi-person-circle"></i>
+      <div class="user-profile" (click)="toggleUserMenu()">
+        <div class="user-avatar-container">
+          <div class="user-avatar">
+            <span class="avatar-text">{{ getInitials(currentUser) }}</span>
+            <div class="avatar-status"></div>
+            <div class="avatar-ring"></div>
+          </div>
         </div>
-        <div class="user-details">
-          <span class="user-name">{{ currentUser?.prenom }} {{ currentUser?.nom }}</span>
-          <span class="user-role">{{ getRoleLabel(currentUser?.role) }}</span>
+        
+        <div class="user-info">
+          <span class="user-name">{{ getFullName(currentUser) }}</span>
+          <div class="user-role-badge" [class]="getRoleBadgeColor(currentUser?.role)">
+            <div class="badge-dot"></div>
+            <span>{{ getRoleLabel(currentUser?.role) }}</span>
+          </div>
         </div>
-        <i class="bi bi-chevron-down dropdown-icon" [class.rotated]="userMenuOpen"></i>
+        
+        <div class="dropdown-arrow" [class.rotated]="userMenuOpen">
+          <i class="bi bi-chevron-down"></i>
+        </div>
       </div>
       
-      <div class="user-dropdown" [class.active]="userMenuOpen">
-        <a href="#" class="dropdown-item" (click)="closeMenus()">
-          <i class="bi bi-person"></i>
-          <span>Profil</span>
-        </a>
-        <a href="#" class="dropdown-item" (click)="closeMenus()">
-          <i class="bi bi-gear"></i>
-          <span>Paramètres</span>
-        </a>
+      <!-- User Dropdown -->
+      <div class="user-dropdown" 
+           [class.active]="userMenuOpen"
+           #userDropdown>
+        
+        <div class="dropdown-header">
+          <div class="dropdown-avatar-container">
+            <div class="dropdown-avatar">
+              <span>{{ getInitials(currentUser) }}</span>
+              <div class="avatar-glow"></div>
+            </div>
+          </div>
+          <div class="dropdown-user-info">
+            <div class="dropdown-name">{{ getFullName(currentUser) }}</div>
+            <div class="dropdown-email">{{ currentUser?.email }}</div>
+            <div class="dropdown-role" [class]="getRoleBadgeColor(currentUser?.role)">
+              {{ getRoleLabel(currentUser?.role) }}
+            </div>
+          </div>
+        </div>
+        
         <div class="dropdown-divider"></div>
-        <a href="#" class="dropdown-item" (click)="logout($event)">
-          <i class="bi bi-box-arrow-right"></i>
-          <span>Déconnexion</span>
-        </a>
+        
+        <div class="dropdown-menu">
+          <a href="#" class="dropdown-item" (click)="closeMenus()">
+            <div class="item-icon">
+              <i class="bi bi-person-circle"></i>
+            </div>
+            <div class="item-content">
+              <span class="item-title">Mon Profil</span>
+              <span class="item-subtitle">Gérer vos informations personnelles</span>
+            </div>
+            <div class="item-arrow">
+              <i class="bi bi-chevron-right"></i>
+            </div>
+          </a>
+          
+          <a href="#" class="dropdown-item" (click)="closeMenus()">
+            <div class="item-icon">
+              <i class="bi bi-gear-fill"></i>
+            </div>
+            <div class="item-content">
+              <span class="item-title">Paramètres</span>
+              <span class="item-subtitle">Préférences et configuration</span>
+            </div>
+            <div class="item-arrow">
+              <i class="bi bi-chevron-right"></i>
+            </div>
+          </a>
+          
+          <a href="#" class="dropdown-item" (click)="closeMenus()">
+            <div class="item-icon">
+              <i class="bi bi-bell-fill"></i>
+            </div>
+            <div class="item-content">
+              <span class="item-title">Notifications</span>
+              <span class="item-subtitle">Gérer vos alertes</span>
+            </div>
+            <div class="item-arrow">
+              <i class="bi bi-chevron-right"></i>
+            </div>
+          </a>
+          
+          <a href="#" class="dropdown-item" (click)="closeMenus()">
+            <div class="item-icon">
+              <i class="bi bi-question-circle-fill"></i>
+            </div>
+            <div class="item-content">
+              <span class="item-title">Aide & Support</span>
+              <span class="item-subtitle">Centre d'assistance et FAQ</span>
+            </div>
+            <div class="item-arrow">
+              <i class="bi bi-chevron-right"></i>
+            </div>
+          </a>
+        </div>
+        
+        <div class="dropdown-divider"></div>
+        
+        <div class="dropdown-footer">
+          <button class="logout-btn" 
+                  (click)="logout($event)"
+                  [class.loading]="isLoading">
+            <div class="logout-icon">
+              <i class="bi bi-box-arrow-right" *ngIf="!isLoading"></i>
+              <div class="spinner" *ngIf="isLoading"></div>
+            </div>
+            <span>{{ isLoading ? 'Déconnexion...' : 'Se déconnecter' }}</span>
+            <div class="btn-glow"></div>
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- Mobile Menu Button -->
-    <button class="mobile-menu-btn" (click)="toggleMobileMenu()">
-      <span class="hamburger-line" [class.active]="mobileMenuOpen"></span>
-      <span class="hamburger-line" [class.active]="mobileMenuOpen"></span>
-      <span class="hamburger-line" [class.active]="mobileMenuOpen"></span>
+    <!-- Mobile Menu Toggle -->
+    <button class="mobile-menu-toggle" 
+            (click)="toggleMobileMenu()" 
+            [class.active]="mobileMenuOpen"
+            aria-label="Toggle menu">
+      <div class="hamburger-container">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </div>
     </button>
   </div>
 
-  <!-- Mobile Overlay -->
-  <div class="mobile-overlay" 
+  <!-- Mobile Backdrop -->
+  <div class="mobile-backdrop" 
        [class.active]="mobileMenuOpen || userMenuOpen" 
        (click)="closeMenus()"></div>
 </nav>

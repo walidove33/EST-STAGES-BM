@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 
 
 // import { Component } from "@angular/core"
@@ -81,8 +80,6 @@
 // }
 
 
-=======
->>>>>>> ab67ea47660ed6a72166772b3f66c5dcbf39015e
 import { Component, OnInit, OnDestroy } from "@angular/core"
 import { CommonModule } from "@angular/common"
 import { FormsModule } from "@angular/forms"

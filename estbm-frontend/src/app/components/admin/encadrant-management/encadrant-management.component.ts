@@ -140,7 +140,7 @@ import { RouterModule } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { UserService } from '../../../services/user.service';
 import { NotificationService } from '../../../services/notification.service';
-import { NavbarComponent } from '../../shared/navbar/navbar.component';
+import { NavbarComponent } from '../../../shared/components/navbar/navbar.component';
 import { LoadingComponent } from '../../../shared/components/loading/loading.component';
 import { NotificationComponent } from '../../../shared/components/notification/notification.component';
 import { User, CreateEncadrantRequest } from '../../../models/user.model';

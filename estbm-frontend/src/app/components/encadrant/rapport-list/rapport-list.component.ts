@@ -214,7 +214,7 @@ import { FormsModule } from "@angular/forms"
 import { RouterModule } from "@angular/router"
 import { StageService } from "../../../services/stage.service"
 import { ToastService } from "../../../services/toast.service"
-import { NavbarComponent } from "../../shared/navbar/navbar.component"
+import { NavbarComponent } from "../../../shared/components/navbar/navbar.component"
 import { RapportDetails, CommentaireRapport } from '../../../models/stage.model'
 
 @Component({
