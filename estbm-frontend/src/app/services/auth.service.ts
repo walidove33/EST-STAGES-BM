@@ -1,145 +1,632 @@
-  import { Injectable } from "@angular/core"
-  import  { HttpClient } from "@angular/common/http"
-  import {  Observable, BehaviorSubject, throwError } from "rxjs"
-  import { tap, catchError } from "rxjs/operators"
-  import  { AuthResponse, LoginRequest, RegisterRequest } from "../models/auth.model"
-  import  { User } from "../models/user.model"
+  // import { Injectable } from "@angular/core"
+  // import  { HttpClient } from "@angular/common/http"
+  // import {  Observable, BehaviorSubject, throwError } from "rxjs"
+  // import { tap, catchError } from "rxjs/operators"
+  // import  { AuthResponse, LoginRequest, RegisterRequest } from "../models/auth.model"
+  // import  { User } from "../models/user.model"
 
-  @Injectable({ providedIn: "root" })
-  export class AuthService {
-    private baseUrl = "http://localhost:8081/stages/auth"
-    private currentUserSubject = new BehaviorSubject<User | null>(null)
-    public currentUser$ = this.currentUserSubject.asObservable()
+  // @Injectable({ providedIn: "root" })
+  // export class AuthService {
+  //   private baseUrl = "http://localhost:8081/stages/auth"
+  //   private currentUserSubject = new BehaviorSubject<User | null>(null)
+  //   public currentUser$ = this.currentUserSubject.asObservable()
 
-    constructor(private http: HttpClient) {
-      this.loadUserFromStorage()
-    }
+  //   constructor(private http: HttpClient) {
+  //     this.loadUserFromStorage()
+  //   }
 
-    login(data: LoginRequest): Observable<AuthResponse> {
-      console.log("🔐 Attempting login for:", data.email)
-      return this.http.post<AuthResponse>(`${this.baseUrl}/login`, data).pipe(
-        tap((res) => {
-          console.log("✅ Login successful:", res)
-          localStorage.setItem("token", res.token)
-          if (res.refreshToken) {
-            localStorage.setItem("refreshToken", res.refreshToken)
-          }
-          localStorage.setItem("role", res.role as string)
-          const user = res.user as User
-          localStorage.setItem("user", JSON.stringify(user))
-          this.currentUserSubject.next(user)
-          console.log("💾 User data saved to localStorage")
-        }),
-        catchError((err) => {
-          console.error("❌ Login failed:", err)
-          return throwError(() => err)
-        }),
-      )
-    }
+  //   login(data: LoginRequest): Observable<AuthResponse> {
+  //     console.log("🔐 Attempting login for:", data.email)
+  //     return this.http.post<AuthResponse>(`${this.baseUrl}/login`, data).pipe(
+  //       tap((res) => {
+  //         console.log("✅ Login successful:", res)
+  //         localStorage.setItem("token", res.token)
+  //         if (res.refreshToken) {
+  //           localStorage.setItem("refreshToken", res.refreshToken)
+  //         }
+  //         localStorage.setItem("role", res.role as string)
+  //         const user = res.user as User
+  //         localStorage.setItem("user", JSON.stringify(user))
+  //         this.currentUserSubject.next(user)
+  //         console.log("💾 User data saved to localStorage")
+  //       }),
+  //       catchError((err) => {
+  //         console.error("❌ Login failed:", err)
+  //         return throwError(() => err)
+  //       }),
+  //     )
+  //   }
 
-    register(data: RegisterRequest): Observable<any> {
-      return this.http.post(`${this.baseUrl}/register`, data).pipe(catchError((err) => throwError(() => err)))
-    }
+  //   register(data: RegisterRequest): Observable<any> {
+  //     return this.http.post(`${this.baseUrl}/register`, data).pipe(catchError((err) => throwError(() => err)))
+  //   }
 
-    logout(): void {
-      console.log("🚪 Logging out user")
-      localStorage.clear()
-      this.currentUserSubject.next(null)
-    }
+  //   logout(): void {
+  //     console.log("🚪 Logging out user")
+  //     localStorage.clear()
+  //     this.currentUserSubject.next(null)
+  //   }
 
  
 
 
-    isAuthenticated(): boolean {
-    const token = this.getToken();
-    if (!token) return false;
+  //   isAuthenticated(): boolean {
+  //   const token = this.getToken();
+  //   if (!token) return false;
+
+  //   try {
+  //     const decoded = this.decodeToken(token);
+  //     const now = Date.now() / 1000;
+  //     return decoded.exp > now; // Vérifie si le token est expiré
+  //   } catch {
+  //     return false;
+  //   }
+  // }
+
+  // refreshToken(): Observable<AuthResponse> {
+  //   const refreshToken = localStorage.getItem('refreshToken');
+  //   return this.http.post<AuthResponse>(`${this.baseUrl}/refresh`, { refreshToken });
+  // }
+
+  //   getUserRole(): "ETUDIANT" | "ENCADRANT" | "ADMIN" | null {
+  //     try {
+  //       const token = this.getToken()
+  //       if (!token) return null
+  //       const decoded = this.decodeToken(token)
+  //       const role = decoded.role || decoded.authorities?.[0]?.replace("ROLE_", "") || null
+  //       console.log("👤 User role from token:", role)
+  //       return role
+  //     } catch {
+  //       const fallbackRole = localStorage.getItem("role") as "ETUDIANT" | "ENCADRANT" | "ADMIN" | null
+  //       console.log("👤 User role from fallback:", fallbackRole)
+  //       return fallbackRole
+  //     }
+  //   }
+
+  //   getUserId(): number | null {
+  //     const user = this.getCurrentUser();
+  //   return user ? user.id : null;
+  //   }
+
+  //   getUserEmail(): string | null {
+  //     const user = this.getCurrentUser();
+  //   return user ? user.email : null;
+  //   }
+
+  //   getToken(): string | null {
+  //     const token = localStorage.getItem("token")
+  //     console.log("🎫 Retrieved token:", token ? "Present" : "Not found")
+  //     return token
+  //   }
+
+  //   getCurrentUser(): User | null {
+  //     return this.currentUserSubject.value
+  //   }
+
+  //   fetchProfile(): Observable<User> {
+  //     return this.http.get<User>(`${this.baseUrl}/me`).pipe(
+  //       tap((u) => {
+  //         this.currentUserSubject.next(u)
+  //         localStorage.setItem("user", JSON.stringify(u))
+  //       }),
+  //       catchError((err) => throwError(() => err)),
+  //     )
+  //   }
+
+  //   private loadUserFromStorage(): void {
+  //     const stored = localStorage.getItem("user")
+  //     if (stored) {
+  //       try {
+  //         const user = JSON.parse(stored)
+  //         this.currentUserSubject.next(user)
+  //         console.log("👤 Loaded user from storage:", user)
+  //       } catch (error) {
+  //         console.error("❌ Error parsing stored user:", error)
+  //         localStorage.removeItem("user")
+  //       }
+  //     }
+  //   }
+
+  //   private decodeToken(token: string): any {
+  //     try {
+  //       const payload = token.split(".")[1]
+  //       const decoded = JSON.parse(atob(payload))
+  //       console.log("🔍 Decoded token:", decoded)
+  //       return decoded
+  //     } catch (error) {
+  //       console.error("❌ Error decoding token:", error)
+  //       throw error
+  //     }
+  //   }
+
+
+
+  // }
+
+
+  import { Injectable } from "@angular/core"
+import { HttpClient } from "@angular/common/http"
+import { Observable, BehaviorSubject, throwError, timer } from "rxjs"
+import { tap, catchError, switchMap, finalize } from "rxjs/operators"
+import { AuthResponse, LoginRequest, RegisterRequest } from "../models/auth.model"
+import { User } from "../models/user.model"
+import { NotificationService } from "./notification.service"
+
+@Injectable({ providedIn: "root" })
+export class AuthService {
+  private baseUrl = "http://localhost:8081/stages/auth"
+  private currentUserSubject = new BehaviorSubject<User | null>(null)
+  public currentUser$ = this.currentUserSubject.asObservable()
+  
+  // Loading states
+  private loginLoadingSubject = new BehaviorSubject<boolean>(false)
+  public loginLoading$ = this.loginLoadingSubject.asObservable()
+  
+  private registerLoadingSubject = new BehaviorSubject<boolean>(false)
+  public registerLoading$ = this.registerLoadingSubject.asObservable()
+
+  constructor(
+    private http: HttpClient,
+    private notificationService: NotificationService
+  ) {
+    this.loadUserFromStorage()
+  }
+
+  login(data: LoginRequest): Observable<AuthResponse> {
+    console.log("🔐 Attempting login for:", data.email)
+    
+    // Start loading animation
+    this.loginLoadingSubject.next(true)
+    const loadingId = this.notificationService.loading(
+      'Connexion en cours...', 
+      'Vérification de vos identifiants'
+    )
+
+    return this.http.post<AuthResponse>(`${this.baseUrl}/login`, data).pipe(
+      // Add artificial delay for better UX (remove in production)
+      switchMap(response => timer(800).pipe(switchMap(() => [response]))),
+      
+      tap((res) => {
+        console.log("✅ Login successful:", res)
+        
+        // Store authentication data
+        localStorage.setItem("token", res.token)
+        if (res.refreshToken) {
+          localStorage.setItem("refreshToken", res.refreshToken)
+        }
+        localStorage.setItem("role", res.role as string)
+        
+        const user = res.user as User
+        localStorage.setItem("user", JSON.stringify(user))
+        this.currentUserSubject.next(user)
+        
+        console.log("💾 User data saved to localStorage")
+        
+        // Success notification with animation
+        this.notificationService.operationSuccess(
+          loadingId,
+          'Connexion',
+          `Bienvenue ${user.prenom} ${user.nom} !`
+        )
+      }),
+      
+      catchError((err) => {
+        console.error("❌ Login failed:", err)
+        
+        // Error notification with animation
+        let errorMessage = "Une erreur est survenue lors de la connexion"
+        if (err.status === 401) {
+          errorMessage = "Email ou mot de passe incorrect"
+        } else if (err.status === 403) {
+          errorMessage = "Accès refusé. Contactez l'administrateur."
+        } else if (err.status === 0) {
+          errorMessage = "Impossible de se connecter au serveur"
+        }
+        
+        this.notificationService.operationError(loadingId, 'Connexion', errorMessage)
+        return throwError(() => err)
+      }),
+      
+      finalize(() => {
+        this.loginLoadingSubject.next(false)
+      })
+    )
+  }
+
+  register(data: RegisterRequest): Observable<any> {
+    console.log("📝 Attempting registration for:", data.email)
+    
+    // Start loading animation
+    this.registerLoadingSubject.next(true)
+    const loadingId = this.notificationService.loading(
+      'Inscription en cours...', 
+      'Création de votre compte étudiant'
+    )
+
+    return this.http.post(`${this.baseUrl}/register`, data).pipe(
+      // Add artificial delay for better UX
+      switchMap(response => timer(1000).pipe(switchMap(() => [response]))),
+      
+      tap((response) => {
+        console.log("✅ Registration successful:", response)
+        
+        // Success notification with celebration animation
+        this.notificationService.operationSuccess(
+          loadingId,
+          'Inscription',
+          `Compte créé pour ${data.prenom} ${data.nom}. Vous pouvez maintenant vous connecter.`
+        )
+      }),
+      
+      catchError((err) => {
+        console.error("❌ Registration failed:", err)
+        
+        let errorMessage = "Une erreur est survenue lors de l'inscription"
+        if (err.status === 400) {
+          errorMessage = err.error || "Données invalides"
+        } else if (err.status === 409) {
+          errorMessage = "Un compte existe déjà avec cet email"
+        } else if (err.status === 401) {
+          errorMessage = "Étudiant non reconnu dans le système"
+        }
+        
+        this.notificationService.operationError(loadingId, 'Inscription', errorMessage)
+        return throwError(() => err)
+      }),
+      
+      finalize(() => {
+        this.registerLoadingSubject.next(false)
+      })
+    )
+  }
+
+  logout(): void {
+    console.log("🚪 Logging out user")
+    
+    // Show logout animation
+    const loadingId = this.notificationService.loading('Déconnexion...', 'À bientôt !')
+    
+    setTimeout(() => {
+      localStorage.clear()
+      this.currentUserSubject.next(null)
+      
+      this.notificationService.operationSuccess(
+        loadingId,
+        'Déconnexion',
+        'Vous avez été déconnecté avec succès'
+      )
+    }, 500)
+  }
+
+  isAuthenticated(): boolean {
+    const token = this.getToken()
+    if (!token) return false
 
     try {
-      const decoded = this.decodeToken(token);
-      const now = Date.now() / 1000;
-      return decoded.exp > now; // Vérifie si le token est expiré
+      const decoded = this.decodeToken(token)
+      const now = Date.now() / 1000
+      const isValid = decoded.exp > now
+      
+      if (!isValid) {
+        console.log("🔒 Token expired, clearing storage")
+        this.logout()
+      }
+      
+      return isValid
     } catch {
-      return false;
+      console.log("🔒 Invalid token, clearing storage")
+      this.logout()
+      return false
     }
   }
 
   refreshToken(): Observable<AuthResponse> {
-    const refreshToken = localStorage.getItem('refreshToken');
-    return this.http.post<AuthResponse>(`${this.baseUrl}/refresh`, { refreshToken });
+    const refreshToken = localStorage.getItem('refreshToken')
+    if (!refreshToken) {
+      return throwError(() => new Error('No refresh token available'))
+    }
+
+    const loadingId = this.notificationService.loading(
+      'Actualisation de la session...', 
+      'Renouvellement automatique'
+    )
+
+    return this.http.post<AuthResponse>(`${this.baseUrl}/refresh`, { refreshToken }).pipe(
+      tap((response) => {
+        // Update tokens
+        localStorage.setItem("token", response.token)
+        if (response.refreshToken) {
+          localStorage.setItem("refreshToken", response.refreshToken)
+        }
+        
+        this.notificationService.operationSuccess(
+          loadingId,
+          'Session',
+          'Session renouvelée automatiquement'
+        )
+      }),
+      
+      catchError((err) => {
+        this.notificationService.operationError(
+          loadingId,
+          'Session',
+          'Impossible de renouveler la session. Veuillez vous reconnecter.'
+        )
+        this.logout()
+        return throwError(() => err)
+      })
+    )
   }
 
-    getUserRole(): "ETUDIANT" | "ENCADRANT" | "ADMIN" | null {
-      try {
-        const token = this.getToken()
-        if (!token) return null
-        const decoded = this.decodeToken(token)
-        const role = decoded.role || decoded.authorities?.[0]?.replace("ROLE_", "") || null
-        console.log("👤 User role from token:", role)
-        return role
-      } catch {
-        const fallbackRole = localStorage.getItem("role") as "ETUDIANT" | "ENCADRANT" | "ADMIN" | null
-        console.log("👤 User role from fallback:", fallbackRole)
-        return fallbackRole
+  getUserRole(): "ETUDIANT" | "ENCADRANT" | "ADMIN" | null {
+    try {
+      const token = this.getToken()
+      if (!token) return null
+      
+      const decoded = this.decodeToken(token)
+      const role = decoded.role || decoded.authorities?.[0]?.replace("ROLE_", "") || null
+      console.log("👤 User role from token:", role)
+      return role
+    } catch {
+      const fallbackRole = localStorage.getItem("role") as "ETUDIANT" | "ENCADRANT" | "ADMIN" | null
+      console.log("👤 User role from fallback:", fallbackRole)
+      return fallbackRole
+    }
+  }
+
+  getUserId(): number | null {
+    const user = this.getCurrentUser()
+    return user ? user.id : null
+  }
+
+  getUserEmail(): string | null {
+    const user = this.getCurrentUser()
+    return user ? user.email : null
+  }
+
+  getToken(): string | null {
+    const token = localStorage.getItem("token")
+    console.log("🎫 Retrieved token:", token ? "Present" : "Not found")
+    return token
+  }
+
+  getCurrentUser(): User | null {
+    return this.currentUserSubject.value
+  }
+
+  fetchProfile(): Observable<User> {
+    const loadingId = this.notificationService.loading(
+      'Chargement du profil...', 
+      'Récupération de vos informations'
+    )
+
+    return this.http.get<User>(`${this.baseUrl}/me`).pipe(
+      tap((user) => {
+        this.currentUserSubject.next(user)
+        localStorage.setItem("user", JSON.stringify(user))
+        
+        this.notificationService.operationSuccess(
+          loadingId,
+          'Profil',
+          'Informations mises à jour'
+        )
+      }),
+      
+      catchError((err) => {
+        this.notificationService.operationError(
+          loadingId,
+          'Profil',
+          'Impossible de charger le profil'
+        )
+        return throwError(() => err)
+      })
+    )
+  }
+
+  // Enhanced user session management
+  extendSession(): void {
+    const loadingId = this.notificationService.loading(
+      'Extension de session...', 
+      'Prolongement automatique'
+    )
+
+    this.refreshToken().subscribe({
+      next: () => {
+        this.notificationService.operationSuccess(
+          loadingId,
+          'Session',
+          'Session prolongée de 2 heures'
+        )
+      },
+      error: () => {
+        this.notificationService.operationError(
+          loadingId,
+          'Session',
+          'Impossible de prolonger la session'
+        )
       }
-    }
+    })
+  }
 
-    getUserId(): number | null {
-      const user = this.getCurrentUser();
-    return user ? user.id : null;
-    }
-
-    getUserEmail(): string | null {
-      const user = this.getCurrentUser();
-    return user ? user.email : null;
-    }
-
-    getToken(): string | null {
-      const token = localStorage.getItem("token")
-      console.log("🎫 Retrieved token:", token ? "Present" : "Not found")
-      return token
-    }
-
-    getCurrentUser(): User | null {
-      return this.currentUserSubject.value
-    }
-
-    fetchProfile(): Observable<User> {
-      return this.http.get<User>(`${this.baseUrl}/me`).pipe(
-        tap((u) => {
-          this.currentUserSubject.next(u)
-          localStorage.setItem("user", JSON.stringify(u))
-        }),
-        catchError((err) => throwError(() => err)),
+  // Check session validity with notification
+  checkSession(): boolean {
+    const isValid = this.isAuthenticated()
+    
+    if (!isValid) {
+      this.notificationService.warning(
+        'Session expirée',
+        'Votre session a expiré. Veuillez vous reconnecter.',
+        0,
+        [{
+          label: 'Se reconnecter',
+          style: 'primary',
+          action: () => {
+            window.location.href = '/login'
+          }
+        }]
       )
     }
-
-    private loadUserFromStorage(): void {
-      const stored = localStorage.getItem("user")
-      if (stored) {
-        try {
-          const user = JSON.parse(stored)
-          this.currentUserSubject.next(user)
-          console.log("👤 Loaded user from storage:", user)
-        } catch (error) {
-          console.error("❌ Error parsing stored user:", error)
-          localStorage.removeItem("user")
-        }
-      }
-    }
-
-    private decodeToken(token: string): any {
-      try {
-        const payload = token.split(".")[1]
-        const decoded = JSON.parse(atob(payload))
-        console.log("🔍 Decoded token:", decoded)
-        return decoded
-      } catch (error) {
-        console.error("❌ Error decoding token:", error)
-        throw error
-      }
-    }
-
-
-
+    
+    return isValid
   }
 
+  // Update user profile with animation
+  updateProfile(profileData: Partial<User>): Observable<User> {
+    const loadingId = this.notificationService.loading(
+      'Mise à jour du profil...', 
+      'Sauvegarde de vos modifications'
+    )
+
+    return this.http.put<User>(`${this.baseUrl}/profile`, profileData).pipe(
+      tap((updatedUser) => {
+        this.currentUserSubject.next(updatedUser)
+        localStorage.setItem("user", JSON.stringify(updatedUser))
+        
+        this.notificationService.operationSuccess(
+          loadingId,
+          'Profil',
+          'Vos informations ont été mises à jour avec succès'
+        )
+      }),
+      
+      catchError((err) => {
+        this.notificationService.operationError(
+          loadingId,
+          'Profil',
+          'Impossible de mettre à jour le profil'
+        )
+        return throwError(() => err)
+      })
+    )
+  }
+
+  // Change password with animation
+  changePassword(currentPassword: string, newPassword: string): Observable<any> {
+    const loadingId = this.notificationService.loading(
+      'Modification du mot de passe...', 
+      'Sécurisation de votre compte'
+    )
+
+    return this.http.put(`${this.baseUrl}/change-password`, {
+      currentPassword,
+      newPassword
+    }).pipe(
+      tap(() => {
+        this.notificationService.operationSuccess(
+          loadingId,
+          'Mot de passe',
+          'Votre mot de passe a été modifié avec succès'
+        )
+      }),
+      
+      catchError((err) => {
+        let errorMessage = 'Impossible de modifier le mot de passe'
+        if (err.status === 400) {
+          errorMessage = 'Mot de passe actuel incorrect'
+        }
+        
+        this.notificationService.operationError(
+          loadingId,
+          'Mot de passe',
+          errorMessage
+        )
+        return throwError(() => err)
+      })
+    )
+  }
+
+  private loadUserFromStorage(): void {
+    const stored = localStorage.getItem("user")
+    if (stored) {
+      try {
+        const user = JSON.parse(stored)
+        this.currentUserSubject.next(user)
+        console.log("👤 Loaded user from storage:", user)
+        
+        // Validate session on app start
+        if (!this.isAuthenticated()) {
+          this.notificationService.warning(
+            'Session expirée',
+            'Votre session a expiré. Veuillez vous reconnecter.'
+          )
+        }
+      } catch (error) {
+        console.error("❌ Error parsing stored user:", error)
+        localStorage.removeItem("user")
+        this.notificationService.error(
+          'Erreur de session',
+          'Données de session corrompues. Veuillez vous reconnecter.'
+        )
+      }
+    }
+  }
+
+  private decodeToken(token: string): any {
+    try {
+      const payload = token.split(".")[1]
+      const decoded = JSON.parse(atob(payload))
+      console.log("🔍 Decoded token:", decoded)
+      return decoded
+    } catch (error) {
+      console.error("❌ Error decoding token:", error)
+      throw error
+    }
+  }
+
+  // Performance optimization: preload user data
+  preloadUserData(): void {
+    if (this.isAuthenticated() && !this.getCurrentUser()) {
+      this.fetchProfile().subscribe({
+        next: () => {
+          console.log("✅ User data preloaded")
+        },
+        error: (err) => {
+          console.error("❌ Failed to preload user data:", err)
+        }
+      })
+    }
+  }
+
+  // Session monitoring
+  startSessionMonitoring(): void {
+    // Check session every 5 minutes
+    timer(0, 5 * 60 * 1000).subscribe(() => {
+      if (this.isAuthenticated()) {
+        const token = this.getToken()
+        if (token) {
+          const decoded = this.decodeToken(token)
+          const expiresIn = decoded.exp * 1000 - Date.now()
+          
+          // Warn user 10 minutes before expiration
+          if (expiresIn < 10 * 60 * 1000 && expiresIn > 9 * 60 * 1000) {
+            this.notificationService.warning(
+              'Session bientôt expirée',
+              'Votre session expirera dans 10 minutes.',
+              0,
+              [{
+                label: 'Prolonger',
+                style: 'primary',
+                action: () => this.extendSession()
+              }]
+            )
+          }
+        }
+      }
+    })
+  }
+
+  // Get loading states
+  isLoginLoading(): boolean {
+    return this.loginLoadingSubject.value
+  }
+
+  isRegisterLoading(): boolean {
+    return this.registerLoadingSubject.value
+  }
+
+  // Clear all auth-related notifications
+  clearAuthNotifications(): void {
+    this.notificationService.clearByType('loading')
+    this.notificationService.clearByType('error')
+  }
+}
