@@ -406,7 +406,10 @@ export interface DetailSoutenance {
 }
 
 export interface SoutenanceEtudiantSlotDto {
+<<<<<<< HEAD
 entreprise: any;
+=======
+>>>>>>> ab67ea47660ed6a72166772b3f66c5dcbf39015e
   etudiantId: number;
   date: string;       // ISO date
   heureDebut: string; // "HH:mm:ss"

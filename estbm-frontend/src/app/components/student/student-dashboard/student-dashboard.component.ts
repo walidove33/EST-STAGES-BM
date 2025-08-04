@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 
 
@@ -647,6 +648,8 @@
 // }
 
 
+=======
+>>>>>>> ab67ea47660ed6a72166772b3f66c5dcbf39015e
 import { Component, type OnInit, type OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from "@angular/core"
 import { CommonModule } from "@angular/common"
 import { RouterModule } from "@angular/router"

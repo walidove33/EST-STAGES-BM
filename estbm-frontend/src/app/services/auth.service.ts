@@ -1,3 +1,4 @@
+<<<<<<< HEAD
   // import { Injectable } from "@angular/core"
   // import  { HttpClient } from "@angular/common/http"
   // import {  Observable, BehaviorSubject, throwError } from "rxjs"
@@ -298,6 +299,162 @@ export class AuthService {
     }, 500)
   }
 
+=======
+import { Injectable } from "@angular/core"
+import { HttpClient } from "@angular/common/http"
+import { Observable, BehaviorSubject, throwError, timer } from "rxjs"
+import { tap, catchError, switchMap, finalize } from "rxjs/operators"
+import { AuthResponse, LoginRequest, RegisterRequest } from "../models/auth.model"
+import { User } from "../models/user.model"
+import { NotificationService } from "./notification.service"
+
+@Injectable({ providedIn: "root" })
+export class AuthService {
+  private baseUrl = "http://localhost:8081/stages/auth"
+  private currentUserSubject = new BehaviorSubject<User | null>(null)
+  public currentUser$ = this.currentUserSubject.asObservable()
+  
+  // Loading states
+  private loginLoadingSubject = new BehaviorSubject<boolean>(false)
+  public loginLoading$ = this.loginLoadingSubject.asObservable()
+  
+  private registerLoadingSubject = new BehaviorSubject<boolean>(false)
+  public registerLoading$ = this.registerLoadingSubject.asObservable()
+
+  constructor(
+    private http: HttpClient,
+    private notificationService: NotificationService
+  ) {
+    this.loadUserFromStorage()
+  }
+
+  login(data: LoginRequest): Observable<AuthResponse> {
+    console.log("🔐 Attempting login for:", data.email)
+    
+    // Start loading animation
+    this.loginLoadingSubject.next(true)
+    const loadingId = this.notificationService.loading(
+      'Connexion en cours...', 
+      'Vérification de vos identifiants'
+    )
+
+    return this.http.post<AuthResponse>(`${this.baseUrl}/login`, data).pipe(
+      // Add artificial delay for better UX (remove in production)
+      switchMap(response => timer(800).pipe(switchMap(() => [response]))),
+      
+      tap((res) => {
+        console.log("✅ Login successful:", res)
+        
+        // Store authentication data
+        localStorage.setItem("token", res.token)
+        if (res.refreshToken) {
+          localStorage.setItem("refreshToken", res.refreshToken)
+        }
+        localStorage.setItem("role", res.role as string)
+        
+        const user = res.user as User
+        localStorage.setItem("user", JSON.stringify(user))
+        this.currentUserSubject.next(user)
+        
+        console.log("💾 User data saved to localStorage")
+        
+        // Success notification with animation
+        this.notificationService.operationSuccess(
+          loadingId,
+          'Connexion',
+          `Bienvenue ${user.prenom} ${user.nom} !`
+        )
+      }),
+      
+      catchError((err) => {
+        console.error("❌ Login failed:", err)
+        
+        // Error notification with animation
+        let errorMessage = "Une erreur est survenue lors de la connexion"
+        if (err.status === 401) {
+          errorMessage = "Email ou mot de passe incorrect"
+        } else if (err.status === 403) {
+          errorMessage = "Accès refusé. Contactez l'administrateur."
+        } else if (err.status === 0) {
+          errorMessage = "Impossible de se connecter au serveur"
+        }
+        
+        this.notificationService.operationError(loadingId, 'Connexion', errorMessage)
+        return throwError(() => err)
+      }),
+      
+      finalize(() => {
+        this.loginLoadingSubject.next(false)
+      })
+    )
+  }
+
+  register(data: RegisterRequest): Observable<any> {
+    console.log("📝 Attempting registration for:", data.email)
+    
+    // Start loading animation
+    this.registerLoadingSubject.next(true)
+    const loadingId = this.notificationService.loading(
+      'Inscription en cours...', 
+      'Création de votre compte étudiant'
+    )
+
+    return this.http.post(`${this.baseUrl}/register`, data).pipe(
+      // Add artificial delay for better UX
+      switchMap(response => timer(1000).pipe(switchMap(() => [response]))),
+      
+      tap((response) => {
+        console.log("✅ Registration successful:", response)
+        
+        // Success notification with celebration animation
+        this.notificationService.operationSuccess(
+          loadingId,
+          'Inscription',
+          `Compte créé pour ${data.prenom} ${data.nom}. Vous pouvez maintenant vous connecter.`
+        )
+      }),
+      
+      catchError((err) => {
+        console.error("❌ Registration failed:", err)
+        
+        let errorMessage = "Une erreur est survenue lors de l'inscription"
+        if (err.status === 400) {
+          errorMessage = err.error || "Données invalides"
+        } else if (err.status === 409) {
+          errorMessage = "Un compte existe déjà avec cet email"
+        } else if (err.status === 401) {
+          errorMessage = "Étudiant non reconnu dans le système"
+        }
+        
+        this.notificationService.operationError(loadingId, 'Inscription', errorMessage)
+        return throwError(() => err)
+      }),
+      
+      finalize(() => {
+        this.registerLoadingSubject.next(false)
+      })
+    )
+  }
+
+  logout(): void {
+    console.log("🚪 Logging out user")
+    
+    // Show logout animation
+    const loadingId = this.notificationService.loading('Déconnexion...', 'À bientôt !')
+    
+    setTimeout(() => {
+      localStorage.clear()
+      this.currentUserSubject.next(null)
+      
+      this.notificationService.operationSuccess(
+        loadingId,
+        'Déconnexion',
+        'Vous avez été déconnecté avec succès'
+      )
+    }, 500)
+  }
+
+>>>>>>> ab67ea47660ed6a72166772b3f66c5dcbf39015e
   isAuthenticated(): boolean {
     const token = this.getToken()
     if (!token) return false
