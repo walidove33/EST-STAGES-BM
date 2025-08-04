@@ -171,3 +171,37 @@ export interface GroupAssignmentRequest {
   anneeScolaireId: number | string;
 }
 
+export interface EncadrantDetails {
+  id: number;
+  nom: string;
+  prenom: string;
+  specialite: string | null;
+  departement: { id: number; nom: string } | null;
+}
+
+export interface PlanificationSoutenanceResponse {
+  id: number;
+  dateSoutenance: string; // ISO date, ex. "2025-09-15"
+  encadrant: EncadrantDetails | null;
+  departement: { id: number; nom: string };
+  classeGroupe: { id: number; nom: string };
+  anneeScolaire: { id: number; libelle: string };
+}
+
+export interface DetailSoutenance {
+  id: number;
+  sujet: string;
+  dateSoutenance: string; // ISO date
+  heureDebut: string;     // "HH:mm:ss"
+  heureFin: string;       // "HH:mm:ss"
+  etudiant: { id: number; nom?: string; prenom?: string };
+  planification: { id: number };
+}
+
+export interface SoutenanceEtudiantSlotDto {
+  etudiantId: number;
+  date: string;       // ISO date
+  heureDebut: string; // "HH:mm:ss"
+  heureFin: string;   // "HH:mm:ss"
+  sujet: string;
+}

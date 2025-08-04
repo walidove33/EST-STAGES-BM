@@ -56,7 +56,11 @@ export const routes: Routes = [
       path: 'commentaires',
       loadComponent: () => import('./components/encadrant/rapport-commentaires/rapport-commentaires.component')
                         .then(m => m.RapportCommentairesComponent)
-    }
+     },
+     {
+       path: 'soutenances',
+       loadComponent: () => import('./components/encadrant/soutenance-management/soutenance-management.component').then(m => m.SoutenanceManagementComponent)
+     }
     ]
   },
   {
@@ -75,6 +79,33 @@ export const routes: Routes = [
       {
         path: 'admins',
         loadComponent: () => import('./components/admin/admin-management/admin-management.component').then(m => m.AdminManagementComponent)
+      },
+      {
+        path: 'planifications',
+        loadComponent: () => import('./components/admin/planification-management/planification-management.component').then(m => m.PlanificationManagementComponent)
+      }
+    ]
+  },
+  {
+    path: 'student',
+    canActivate: [AuthGuard],
+    data: { role: 'ETUDIANT' },
+    children: [
+      {
+        path: 'dashboard',
+        loadComponent: () => import('./components/student/student-dashboard/student-dashboard.component').then(m => m.StudentDashboardComponent)
+      },
+      {
+        path: 'stages',
+        loadComponent: () => import('./components/student/stage-list/stage-list.component').then(m => m.StageListComponent)
+      },
+      {
+        path: 'new-stage',
+        loadComponent: () => import('./components/student/demande-form/demande-form.component').then(m => m.DemandeFormComponent)
+      },
+      {
+        path: 'soutenances',
+        loadComponent: () => import('./components/student/soutenance-view/soutenance-view.component').then(m => m.SoutenanceViewComponent)
       }
     ]
   },

@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core"
 import { HttpClient, HttpHeaders, HttpParams, HttpResponse } from "@angular/common/http"
 import { Observable, throwError, timer } from "rxjs"
-import { Stage, StageRequest, Rapport, RapportDetails } from "../models/stage.model"
+import { Stage, StageRequest, Rapport, RapportDetails, PlanificationSoutenanceResponse, DetailSoutenance, SoutenanceEtudiantSlotDto } from "../models/stage.model"
 import { AuthService } from "./auth.service"
 import { NotificationService } from "./notification.service"
 import { environment } from "../environement"
@@ -20,12 +20,201 @@ export class StageService {
   private encadrantUrl = `${environment.apiUrl}/stages/encadrants`
   private etudUrl = "http://localhost:8081/stages/etudiants"
   private rapportUrl = "http://localhost:8081/stages/rapports"
+  private planifUrl = `${environment.apiUrl}/stages/planification`
 
   constructor(
     private http: HttpClient,
     private authService: AuthService,
     private notificationService: NotificationService
   ) {}
+
+  // ==================== SOUTENANCE METHODS ====================
+
+  createPlanification(planif: {
+    dateSoutenance: string;
+    encadrant: { id: number };
+    departement: { id: number };
+    classeGroupe: { id: number };
+    anneeScolaire: { id: number };
+  }): Observable<PlanificationSoutenanceResponse> {
+    const loadingId = this.notificationService.loading(
+      'Création de la planification...', 
+      'Configuration des soutenances'
+    )
+
+    return this.http.post<PlanificationSoutenanceResponse>(
+      this.planifUrl,
+      planif
+    ).pipe(
+      switchMap(response => timer(600).pipe(switchMap(() => [response]))),
+      
+      tap((response) => {
+        this.notificationService.operationSuccess(
+          loadingId,
+          'Planification créée',
+          `Planification pour le ${response.dateSoutenance} créée avec succès`
+        )
+      }),
+      
+      catchError((error) => {
+        this.notificationService.operationError(
+          loadingId,
+          'Planification',
+          'Impossible de créer la planification'
+        )
+        return this.handleError(error)
+      })
+    )
+  }
+
+  getAllPlanifications(): Observable<PlanificationSoutenanceResponse[]> {
+    const loadingId = this.notificationService.loading(
+      'Chargement des planifications...', 
+      'Récupération de toutes les planifications'
+    )
+
+    return this.http.get<PlanificationSoutenanceResponse[]>(this.planifUrl).pipe(
+      switchMap(planifs => timer(400).pipe(switchMap(() => [planifs]))),
+      
+      tap((planifs) => {
+        this.notificationService.operationSuccess(
+          loadingId,
+          'Planifications',
+          `${planifs.length} planification(s) trouvée(s)`
+        )
+      }),
+      
+      catchError((error) => {
+        this.notificationService.operationError(
+          loadingId,
+          'Planifications',
+          'Impossible de charger les planifications'
+        )
+        return this.handleError(error)
+      })
+    )
+  }
+
+  getPlanificationsByEncadrant(encadrantId: number): Observable<PlanificationSoutenanceResponse[]> {
+    const loadingId = this.notificationService.loading(
+      'Chargement de vos planifications...', 
+      'Récupération des planifications assignées'
+    )
+
+    return this.http.get<PlanificationSoutenanceResponse[]>(
+      `${this.planifUrl}/encadrant/${encadrantId}`
+    ).pipe(
+      switchMap(planifs => timer(400).pipe(switchMap(() => [planifs]))),
+      
+      tap((planifs) => {
+        this.notificationService.operationSuccess(
+          loadingId,
+          'Vos planifications',
+          `${planifs.length} planification(s) assignée(s)`
+        )
+      }),
+      
+      catchError((error) => {
+        this.notificationService.operationError(
+          loadingId,
+          'Planifications',
+          'Impossible de charger vos planifications'
+        )
+        return this.handleError(error)
+      })
+    )
+  }
+
+  getPlanificationDetails(planifId: number): Observable<DetailSoutenance[]> {
+    const loadingId = this.notificationService.loading(
+      'Chargement des détails...', 
+      'Récupération des créneaux de soutenance'
+    )
+
+    return this.http.get<DetailSoutenance[]>(
+      `${this.planifUrl}/${planifId}/details`
+    ).pipe(
+      switchMap(details => timer(300).pipe(switchMap(() => [details]))),
+      
+      tap((details) => {
+        this.notificationService.operationSuccess(
+          loadingId,
+          'Détails de planification',
+          `${details.length} créneau(x) trouvé(s)`
+        )
+      }),
+      
+      catchError((error) => {
+        this.notificationService.operationError(
+          loadingId,
+          'Détails',
+          'Impossible de charger les détails'
+        )
+        return this.handleError(error)
+      })
+    )
+  }
+
+  addDetailToPlanification(planifId: number, detail: DetailSoutenance): Observable<DetailSoutenance> {
+    const loadingId = this.notificationService.loading(
+      'Ajout du créneau...', 
+      'Création du nouveau créneau de soutenance'
+    )
+
+    return this.http.post<DetailSoutenance>(
+      `${this.planifUrl}/${planifId}/addDetail`,
+      detail
+    ).pipe(
+      switchMap(newDetail => timer(500).pipe(switchMap(() => [newDetail]))),
+      
+      tap((newDetail) => {
+        this.notificationService.operationSuccess(
+          loadingId,
+          'Créneau ajouté',
+          `Créneau de ${newDetail.heureDebut} à ${newDetail.heureFin} créé`
+        )
+      }),
+      
+      catchError((error) => {
+        this.notificationService.operationError(
+          loadingId,
+          'Ajout créneau',
+          'Impossible d\'ajouter le créneau'
+        )
+        return this.handleError(error)
+      })
+    )
+  }
+
+  getMySoutenances(etudiantId: number): Observable<SoutenanceEtudiantSlotDto[]> {
+    const loadingId = this.notificationService.loading(
+      'Chargement de vos soutenances...', 
+      'Récupération de vos créneaux'
+    )
+
+    return this.http.get<SoutenanceEtudiantSlotDto[]>(
+      `${this.planifUrl}/etudiant/${etudiantId}`
+    ).pipe(
+      switchMap(soutenances => timer(300).pipe(switchMap(() => [soutenances]))),
+      
+      tap((soutenances) => {
+        this.notificationService.operationSuccess(
+          loadingId,
+          'Vos soutenances',
+          `${soutenances.length} soutenance(s) programmée(s)`
+        )
+      }),
+      
+      catchError((error) => {
+        this.notificationService.operationError(
+          loadingId,
+          'Soutenances',
+          'Impossible de charger vos soutenances'
+        )
+        return this.handleError(error)
+      })
+    )
+  }
 
   // ==================== STUDENT METHODS ====================
 

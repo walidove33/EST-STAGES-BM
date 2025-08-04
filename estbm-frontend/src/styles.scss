@@ -184,12 +184,7 @@ body {
   font-weight: 400;
   line-height: 1.6;
   color: var(--neutral-800);
-  background: linear-gradient(135deg, 
-    var(--neutral-50) 0%, 
-    var(--primary-50) 25%, 
-    var(--secondary-50) 75%, 
-    var(--neutral-50) 100%);
-  background-attachment: fixed;
+  background: var(--neutral-50);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
