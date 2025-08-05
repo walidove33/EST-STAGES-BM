@@ -389,6 +389,19 @@
           </div>
         </a>
 
+        <a routerLink="/student/ma-planification" class="action-card hover-lift">
+          <div class="action-background"></div>
+          <div class="action-icon">
+            <i class="bi bi-calendar-week"></i>
+          </div>
+          <div class="action-content">
+            <h4>Ma Planification</h4>
+            <p>Consultez vos créneaux de soutenance programmés</p>
+            <span class="action-arrow">
+              <i class="bi bi-arrow-right"></i>
+            </span>
+          </div>
+        </a>
         <div class="action-card info-card">
           <div class="action-background"></div>
           <div class="action-icon">
@@ -501,6 +514,21 @@
                 <div class="progress-bar" 
                      [style.width.%]="getProgressPercentage('enCours')"
                      style="background: var(--info)"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="stat-card stat-accent animate-scaleIn" style="animation-delay: 0.4s">
+            <div class="stat-icon">
+              <i class="bi bi-calendar-check"></i>
+            </div>
+            <div class="stat-content">
+              <div class="stat-value">{{ stats.totalSoutenances }}</div>
+              <div class="stat-label">Soutenances</div>
+              <div class="stat-progress">
+                <div class="progress-bar" 
+                     [style.width.%]="stats.totalSoutenances > 0 ? 100 : 0"
+                     style="background: var(--secondary)"></div>
               </div>
             </div>
           </div>

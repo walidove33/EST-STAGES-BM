@@ -1,4 +1,3 @@
-<!-- Ultra Professional Navbar -->
 <nav class="ultra-navbar" 
      [class.scrolled]="isScrolled" 
      [class.mobile-open]="mobileMenuOpen"
@@ -27,7 +26,6 @@
         <h1 class="brand-title">EST Béni Mellal</h1>
         <span class="brand-subtitle">Gestion des Stages</span>
       </div>
-      <div class="brand-accent"></div>
     </div>
 
     <!-- Desktop Navigation -->
@@ -89,6 +87,17 @@
             <span class="nav-text">Mes Soutenances</span>
             <div class="nav-indicator"></div>
           </a>
+        
+        <a routerLink="/student/ma-planification" 
+           routerLinkActive="active" 
+           class="nav-link"
+           (click)="closeMenus()">
+          <div class="nav-icon">
+            <i class="bi bi-calendar-week-fill"></i>
+          </div>
+          <span class="nav-text">Ma Planification</span>
+          <div class="nav-indicator"></div>
+        </a>
         </div>
         
         <!-- Supervisor Links -->
@@ -97,6 +106,17 @@
             <span class="section-label">Encadrement</span>
             <div class="section-line"></div>
           </div>
+          
+          <a routerLink="/encadrant/planifications" 
+             routerLinkActive="active" 
+             class="nav-link"
+             (click)="closeMenus()">
+            <div class="nav-icon">
+              <i class="bi bi-calendar-week-fill"></i>
+            </div>
+            <span class="nav-text">Planifications</span>
+            <div class="nav-indicator"></div>
+          </a>
           
           <a routerLink="/encadrant/rapports" 
              routerLinkActive="active" 
@@ -283,7 +303,7 @@
     </div>
 
     <!-- Mobile Menu Toggle -->
-    <button class="mobile-menu-toggle" 
+ <button class="mobile-menu-toggle" 
             (click)="toggleMobileMenu()" 
             [class.active]="mobileMenuOpen"
             aria-label="Toggle menu">
@@ -296,7 +316,7 @@
   </div>
 
   <!-- Mobile Backdrop -->
-  <div class="mobile-backdrop" 
+<div class="mobile-backdrop" 
        [class.active]="mobileMenuOpen || userMenuOpen" 
        (click)="closeMenus()"></div>
 </nav>

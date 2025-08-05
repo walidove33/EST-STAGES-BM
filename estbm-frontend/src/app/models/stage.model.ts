@@ -413,3 +413,44 @@ entreprise: any;
   heureFin: string;   // "HH:mm:ss"
   sujet: string;
 }
+
+export interface DataTableColumn<T> {
+  label: string;
+  sortable: boolean;
+  type: 'text' | 'number' | 'date';
+  // either a direct key of T...
+  key?: keyof T;
+  // ...or a custom extractor for nested paths
+  extractor?: (row: T) => string | number;
+}
+
+
+const planifColumns: DataTableColumn<PlanificationSoutenanceResponse>[] = [
+  {
+    label: 'Département',
+    sortable: true,
+    type: 'text',
+    extractor: row => row.departement.nom
+  },
+  {
+    label: 'Classe/Groupe',
+    sortable: true,
+    type: 'text',
+    extractor: row => row.classeGroupe.nom
+  },
+  {
+    label: 'Année Scolaire',
+    sortable: true,
+    type: 'text',
+    extractor: row => row.anneeScolaire.libelle
+  },
+  // any other direct fields can still use ‘key’
+  {
+    label: 'Date Soutenance',
+    sortable: true,
+    type: 'date',
+    key: 'dateSoutenance'
+  }
+];
+
+
