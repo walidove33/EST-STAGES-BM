@@ -584,7 +584,6 @@ interface ChartData {
     CommonModule,
     RouterModule,
     NavbarComponent,
-    NotificationComponent,
     FormsModule,
     CardComponent,
     LoadingComponent,

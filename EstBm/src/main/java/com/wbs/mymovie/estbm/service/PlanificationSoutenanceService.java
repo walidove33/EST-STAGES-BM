@@ -1,16 +1,15 @@
 package com.wbs.mymovie.estbm.service;
 
 import com.wbs.mymovie.estbm.dto.*;
-import com.wbs.mymovie.estbm.model.DetailSoutenance;
-import com.wbs.mymovie.estbm.model.Encadrant;
-import com.wbs.mymovie.estbm.model.PlanificationSoutenance;
-import com.wbs.mymovie.estbm.repository.DetailSoutenanceRepository;
-import com.wbs.mymovie.estbm.repository.EtudiantRepository;
-import com.wbs.mymovie.estbm.repository.PlanificationSoutenanceRepository;
+import com.wbs.mymovie.estbm.model.*;
+import com.wbs.mymovie.estbm.repository.*;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,6 +20,12 @@ public class PlanificationSoutenanceService {
     private final PlanificationSoutenanceRepository planificationRepo;
     private final DetailSoutenanceRepository detailRepo;
     private final EtudiantRepository etudiantRepo;
+    private final EncadrantRepository encadrantRepository;
+    private final DepartementRepository departementRepository;
+    private final ClasseGroupeRepository classeGroupeRepository;
+    private final AnneeScolaireRepository anneeScolaireRepository;
+
+
 
 //    public PlanificationSoutenanceResponse createPlanification(PlanificationSoutenance planif) {
 //        PlanificationSoutenance saved = planificationRepo.save(planif);
@@ -33,12 +38,37 @@ public class PlanificationSoutenanceService {
 //    }
 
     @Transactional
-    public PlanificationSoutenanceResponse createPlanification(PlanificationSoutenance planif) {
-        PlanificationSoutenance saved = planificationRepo.save(planif);
+    public PlanificationSoutenanceResponse createPlanification(
+            @   Valid PlanificationRequest req
+    ) {
+        // Parse the ISO-date string into a LocalDate
+        LocalDate date = LocalDate.parse(
+                req.getDateSoutenance(),
+                DateTimeFormatter.ISO_LOCAL_DATE
+        );
 
-        // Recharge avec toutes les associations pour le mapping
-        PlanificationSoutenance full = planificationRepo.findByIdWithAssociations(saved.getId())
-                .orElseThrow(() -> new RuntimeException("Planification non trouvée après création"));
+        // Build the entity, attaching proxies for each FK
+        PlanificationSoutenance p = new PlanificationSoutenance();
+        p.setDateSoutenance(date);
+        p.setEncadrant(
+                encadrantRepository.getReferenceById(req.getEncadrantId())
+        );
+        p.setDepartement(
+                departementRepository.getReferenceById(req.getDepartementId())
+        );
+        p.setClasseGroupe(
+                classeGroupeRepository.getReferenceById(req.getClasseGroupeId())
+        );
+        p.setAnneeScolaire(
+                anneeScolaireRepository.getReferenceById(req.getAnneeScolaireId())
+        );
+
+        PlanificationSoutenance saved = planificationRepo.save(p);
+        PlanificationSoutenance full  = planificationRepo
+                .findByIdWithAssociations(saved.getId())
+                .orElseThrow(() ->
+                        new RuntimeException("Planification non trouvée après création")
+                );
 
         return mapToResponseDto(full);
     }

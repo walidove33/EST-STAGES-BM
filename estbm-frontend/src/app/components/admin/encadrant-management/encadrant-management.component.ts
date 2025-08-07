@@ -148,7 +148,7 @@ import { User, CreateEncadrantRequest } from '../../../models/user.model';
 @Component({
   selector: 'app-encadrant-management',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, NavbarComponent, LoadingComponent, NotificationComponent],
+  imports: [CommonModule, FormsModule, RouterModule, NavbarComponent],
   templateUrl: './encadrant-management.component.html',
   styleUrls: ['./encadrant-management.component.scss']
 })

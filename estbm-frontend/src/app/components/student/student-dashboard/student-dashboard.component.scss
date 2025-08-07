@@ -11,15 +11,15 @@
 
 .dashboard-layout {
   min-height: 100vh;
-  padding-top: 80px;
+  padding-top: 72px; /* Updated to match navbar height */
   background: linear-gradient(135deg,
-    var(--primary-50) 0%,
-    var(--secondary-50) 25%,
-    var(--neutral-50) 50%,
-    var(--primary-50) 75%,
-    var(--secondary-50) 100%);
+    #f8fafc 0%,
+    #f1f5f9 25%,
+    #f8fafc 50%,
+    #f1f5f9 75%,
+    #f8fafc 100%);
   background-size: 400% 400%;
-  animation: gradientShift 20s ease infinite;
+  animation: gradientShift 30s ease infinite;
   position: relative;
   overflow-x: hidden;
 
@@ -31,39 +31,39 @@
     right: 0;
     bottom: 0;
     background: 
-      radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(168, 85, 247, 0.08) 0%, transparent 50%),
-      radial-gradient(circle at 40% 40%, rgba(236, 72, 153, 0.06) 0%, transparent 50%);
+      radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.04) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.04) 0%, transparent 50%),
+      radial-gradient(circle at 40% 40%, rgba(16, 185, 129, 0.03) 0%, transparent 50%);
     pointer-events: none;
-    animation: float 25s ease-in-out infinite;
+    animation: float 35s ease-in-out infinite;
   }
 }
 
 .dashboard-container {
   max-width: 1400px;
   margin: 0 auto;
-  padding: var(--space-8) var(--space-6);
+  padding: 2rem 1.5rem;
   position: relative;
   z-index: 1;
 }
 
 /* Professional Header */
 .dashboard-header {
-  margin-bottom: var(--space-12);
-  animation: slideInDown var(--duration-700) cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  margin-bottom: 3rem;
+  animation: slideInDown 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
   .header-content {
-    background: rgba(255, 255, 255, 0.98);
-    backdrop-filter: blur(30px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: var(--radius-3xl);
-    padding: var(--space-10);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(40px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 1.5rem;
+    padding: 2.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     box-shadow: 
-      0 20px 40px rgba(0, 0, 0, 0.08),
-      0 0 0 1px rgba(255, 255, 255, 0.2),
+      0 20px 40px rgba(0, 0, 0, 0.06),
+      0 8px 16px rgba(0, 0, 0, 0.04),
       inset 0 1px 0 rgba(255, 255, 255, 0.3);
     position: relative;
     overflow: hidden;
@@ -77,20 +77,20 @@
       height: 100%;
       background: linear-gradient(90deg, 
         transparent, 
-        rgba(255, 255, 255, 0.2), 
+        rgba(255, 255, 255, 0.15), 
         transparent);
-      animation: shimmer 4s infinite;
+      animation: shimmer 6s infinite;
     }
 
     .header-text {
       h1 {
-        font-size: var(--text-4xl);
-        font-weight: 900;
-        margin-bottom: var(--space-3);
+        font-size: 2.5rem;
+        font-weight: 800;
+        margin-bottom: 0.75rem;
         background: linear-gradient(135deg,
-          var(--dashboard-primary) 0%,
-          var(--dashboard-secondary) 50%,
-          var(--dashboard-primary) 100%);
+          #2563eb 0%,
+          #3b82f6 50%,
+          #2563eb 100%);
         background-size: 200% 200%;
         animation: gradientShift 6s ease infinite;
         -webkit-background-clip: text;
@@ -98,18 +98,19 @@
         background-clip: text;
         position: relative;
         letter-spacing: -0.02em;
+        line-height: 1.2;
 
         i {
-          background: linear-gradient(135deg, var(--dashboard-primary), var(--dashboard-secondary));
+          background: linear-gradient(135deg, #2563eb, #3b82f6);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
-          margin-right: var(--space-3);
+          margin-right: 0.75rem;
         }
       }
 
       p {
-        font-size: var(--text-lg);
-        color: var(--neutral-600);
+        font-size: 1.125rem;
+        color: #6b7280;
         margin: 0;
         font-weight: 500;
         line-height: 1.6;
@@ -117,20 +118,20 @@
     }
 
     .header-date {
-      background: linear-gradient(135deg, var(--dashboard-primary), var(--dashboard-secondary));
+      background: linear-gradient(135deg, #2563eb, #3b82f6);
       color: white;
-      padding: var(--space-5) var(--space-8);
-      border-radius: var(--radius-2xl);
+      padding: 1.25rem 2rem;
+      border-radius: 1rem;
       font-weight: 700;
       display: flex;
       align-items: center;
-      gap: var(--space-3);
+      gap: 0.75rem;
       box-shadow: 
-        0 8px 25px rgba(59, 130, 246, 0.3),
+        0 8px 25px rgba(37, 99, 235, 0.25),
         inset 0 1px 0 rgba(255, 255, 255, 0.2);
       position: relative;
       overflow: hidden;
-      transition: transform var(--transition-bounce);
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
       &:hover {
         transform: scale(1.02);
@@ -152,7 +153,7 @@
       }
 
       i {
-        font-size: var(--text-xl);
+        font-size: 1.25rem;
         position: relative;
         z-index: 2;
       }
@@ -160,7 +161,7 @@
       span {
         position: relative;
         z-index: 2;
-        font-size: var(--text-base);
+        font-size: 1rem;
       }
     }
   }
@@ -177,32 +178,32 @@
 
 /* Professional Statistics Section */
 .stats-section {
-  margin-bottom: var(--space-12);
+  margin-bottom: 3rem;
 
   .section-title {
-    font-size: var(--text-3xl);
+    font-size: 1.875rem;
     font-weight: 800;
-    color: var(--neutral-900);
-    margin-bottom: var(--space-8);
+    color: #111827;
+    margin-bottom: 2rem;
     display: flex;
     align-items: center;
     position: relative;
-    animation: slideInLeft var(--duration-500) ease-out;
+    animation: slideInLeft 0.5s ease-out;
 
     &::after {
       content: '';
       position: absolute;
-      bottom: -var(--space-2);
+      bottom: -0.5rem;
       left: 0;
       width: 80px;
       height: 4px;
-      background: linear-gradient(90deg, var(--dashboard-primary), var(--dashboard-secondary));
-      border-radius: var(--radius-full);
+      background: linear-gradient(90deg, #2563eb, #3b82f6);
+      border-radius: 2px;
     }
 
     i {
-      color: var(--dashboard-primary);
-      margin-right: var(--space-3);
+      color: #2563eb;
+      margin-right: 0.75rem;
     }
   }
 }
@@ -210,26 +211,27 @@
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: var(--space-8);
-  margin-bottom: var(--space-8);
+  gap: 2rem;
+  margin-bottom: 2rem;
 
   .stat-card {
-    background: rgba(255, 255, 255, 0.98);
-    backdrop-filter: blur(30px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: var(--radius-3xl);
-    padding: var(--space-10);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(40px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 1.5rem;
+    padding: 2.5rem;
     position: relative;
     overflow: hidden;
-    transition: all var(--transition-bounce);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     box-shadow: 
       0 10px 30px rgba(0, 0, 0, 0.06),
+      0 4px 8px rgba(0, 0, 0, 0.04),
       inset 0 1px 0 rgba(255, 255, 255, 0.3);
     transform: translateY(20px);
     opacity: 0;
 
-    &.animate-slideInUp {
-      animation: slideInUp var(--duration-500) cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    &.animate-scaleIn {
+      animation: scaleIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
     }
 
     &::before {
@@ -257,8 +259,8 @@
     &:hover {
       transform: translateY(-8px) scale(1.02);
       box-shadow: 
-        0 25px 50px rgba(0, 0, 0, 0.12),
-        0 0 0 1px rgba(255, 255, 255, 0.3),
+        0 25px 50px rgba(0, 0, 0, 0.1),
+        0 8px 16px rgba(0, 0, 0, 0.06),
         inset 0 1px 0 rgba(255, 255, 255, 0.4);
 
       &::after {
@@ -273,16 +275,16 @@
     .stat-icon {
       width: 80px;
       height: 80px;
-      border-radius: var(--radius-2xl);
+      border-radius: 1rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: var(--text-3xl);
-      margin-bottom: var(--space-6);
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
       color: white;
       position: relative;
       overflow: hidden;
-      transition: all var(--transition-normal);
+      transition: all 0.3s ease;
       box-shadow: 
         0 8px 25px rgba(0, 0, 0, 0.15),
         inset 0 1px 0 rgba(255, 255, 255, 0.2);
@@ -314,38 +316,38 @@
 
     .stat-content {
       .stat-value {
-        font-size: var(--text-4xl);
+        font-size: 2.5rem;
         font-weight: 900;
-        color: var(--neutral-900);
+        color: #111827;
         line-height: 1;
-        margin-bottom: var(--space-2);
-        background: linear-gradient(135deg, var(--neutral-900), var(--neutral-600));
+        margin-bottom: 0.5rem;
+        background: linear-gradient(135deg, #111827, #6b7280);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         position: relative;
       }
 
       .stat-label {
-        font-size: var(--text-base);
+        font-size: 1rem;
         font-weight: 700;
-        color: var(--neutral-600);
+        color: #6b7280;
         text-transform: uppercase;
         letter-spacing: 0.05em;
-        margin-bottom: var(--space-4);
+        margin-bottom: 1rem;
       }
 
       .stat-progress {
         width: 100%;
         height: 8px;
-        background: var(--neutral-200);
-        border-radius: var(--radius-full);
+        background: #e5e7eb;
+        border-radius: 9999px;
         overflow: hidden;
-        margin-top: var(--space-4);
+        margin-top: 1rem;
 
         .progress-bar {
           height: 100%;
-          border-radius: var(--radius-full);
-          transition: width var(--duration-1000) cubic-bezier(0.4, 0, 0.2, 1);
+          border-radius: 9999px;
+          transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
           position: relative;
 
           &::after {
@@ -368,31 +370,31 @@
     /* Stat card variants */
     &.stat-primary {
       &::before {
-        background: linear-gradient(90deg, var(--dashboard-primary), var(--primary-700));
+        background: linear-gradient(90deg, #2563eb, #1d4ed8);
       }
 
       .stat-icon {
-        background: linear-gradient(135deg, var(--dashboard-primary), var(--primary-700));
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
       }
     }
 
     &.stat-success {
       &::before {
-        background: linear-gradient(90deg, var(--dashboard-success), var(--success-600));
+        background: linear-gradient(90deg, #10b981, #059669);
       }
 
       .stat-icon {
-        background: linear-gradient(135deg, var(--dashboard-success), var(--success-600));
+        background: linear-gradient(135deg, #10b981, #059669);
       }
     }
 
     &.stat-warning {
       &::before {
-        background: linear-gradient(90deg, var(--dashboard-warning), var(--warning-600));
+        background: linear-gradient(90deg, #f59e0b, #d97706);
       }
 
       .stat-icon {
-        background: linear-gradient(135deg, var(--dashboard-warning), var(--warning-600));
+        background: linear-gradient(135deg, #f59e0b, #d97706);
       }
     }
 
@@ -412,22 +414,25 @@
 .content-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--space-8);
-  margin-bottom: var(--space-12);
+  gap: 2rem;
+  margin-bottom: 3rem;
 }
 
 /* Professional Stage Card */
 .current-stage {
   .stage-card {
     background: linear-gradient(135deg,
-      rgba(59, 130, 246, 0.05),
-      rgba(168, 85, 247, 0.03));
-    border: 1px solid rgba(59, 130, 246, 0.1);
-    border-radius: var(--radius-3xl);
-    padding: var(--space-8);
-    transition: all var(--transition-bounce);
+      rgba(37, 99, 235, 0.03),
+      rgba(59, 130, 246, 0.02));
+    border: 1px solid rgba(37, 99, 235, 0.08);
+    border-radius: 1.5rem;
+    padding: 2rem;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     position: relative;
     overflow: hidden;
+    box-shadow: 
+      0 4px 20px rgba(0, 0, 0, 0.04),
+      0 2px 8px rgba(0, 0, 0, 0.02);
 
     &::before {
       content: '';
@@ -435,56 +440,58 @@
       top: 0;
       left: 0;
       right: 0;
-      height: 1px;
+      height: 2px;
       background: linear-gradient(90deg, 
         transparent, 
-        rgba(59, 130, 246, 0.3), 
+        rgba(37, 99, 235, 0.4), 
         transparent);
     }
 
     &:hover {
       transform: translateY(-4px) scale(1.01);
-      box-shadow: 0 20px 40px rgba(59, 130, 246, 0.12);
-      border-color: rgba(59, 130, 246, 0.2);
+      box-shadow: 
+        0 20px 40px rgba(37, 99, 235, 0.08),
+        0 8px 16px rgba(0, 0, 0, 0.04);
+      border-color: rgba(37, 99, 235, 0.15);
     }
 
     .stage-header {
-      margin-bottom: var(--space-8);
+      margin-bottom: 2rem;
 
       .stage-title {
         display: flex;
         justify-content: space-between;
         align-items: flex-start;
-        gap: var(--space-4);
+        gap: 1rem;
 
         h4 {
-          font-size: var(--text-2xl);
+          font-size: 1.5rem;
           font-weight: 800;
-          color: var(--neutral-900);
+          color: #111827;
           margin: 0;
           flex: 1;
           line-height: 1.2;
         }
 
         .stage-badge {
-          font-size: var(--text-sm);
+          font-size: 0.875rem;
           font-weight: 700;
-          padding: var(--space-3) var(--space-5);
-          border-radius: var(--radius-full);
+          padding: 0.75rem 1.25rem;
+          border-radius: 9999px;
           display: flex;
           align-items: center;
           white-space: nowrap;
           box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-          transition: transform var(--transition-normal);
+          transition: transform 0.3s ease;
 
           &:hover {
             transform: scale(1.05);
           }
 
           i {
-            font-size: var(--text-xs);
-            animation: pulse var(--duration-1000) ease-in-out infinite;
-            margin-right: var(--space-2);
+            font-size: 0.75rem;
+            animation: pulse 2s ease-in-out infinite;
+            margin-right: 0.5rem;
           }
         }
       }
@@ -494,8 +501,8 @@
       .detail-row {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: var(--space-8);
-        margin-bottom: var(--space-6);
+        gap: 2rem;
+        margin-bottom: 1.5rem;
 
         &:last-child {
           margin-bottom: 0;
@@ -2485,3 +2492,320 @@
     }
   }
 }
+
+/* Charts Section */
+.charts-section {
+  margin-bottom: 3rem;
+
+  .section-title {
+    font-size: 1.875rem;
+    font-weight: 800;
+    color: #111827;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+    animation: slideInLeft 0.5s ease-out;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: -0.5rem;
+      left: 0;
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, #2563eb, #3b82f6);
+      border-radius: 2px;
+    }
+
+    i {
+      color: #2563eb;
+      margin-right: 0.75rem;
+    }
+  }
+}
+
+.charts-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.chart-card {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(40px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.06),
+    0 4px 8px rgba(0, 0, 0, 0.04),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, 
+      transparent, 
+      rgba(37, 99, 235, 0.4), 
+      transparent);
+  }
+
+  &:hover {
+    transform: translateY(-4px) scale(1.01);
+    box-shadow: 
+      0 20px 40px rgba(37, 99, 235, 0.08),
+      0 8px 16px rgba(0, 0, 0, 0.04);
+    border-color: rgba(37, 99, 235, 0.15);
+  }
+
+  .chart-header {
+    margin-bottom: 1.5rem;
+
+    h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #111827;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+
+      i {
+        color: #2563eb;
+        margin-right: 0.5rem;
+      }
+    }
+
+    p {
+      font-size: 0.875rem;
+      color: #6b7280;
+      margin: 0;
+    }
+  }
+
+  .chart-container {
+    position: relative;
+    width: 100%;
+    
+    canvas {
+      border-radius: 0.75rem;
+    }
+  }
+}
+
+/* Chart Animations */
+@keyframes chartFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.chart-card {
+  animation: chartFadeIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Chart Hover Effects */
+.chart-container:hover {
+  transform: scale(1.02);
+  transition: transform 0.3s ease;
+}
+
+/* Responsive Charts */
+@media (max-width: 768px) {
+  .charts-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .chart-card {
+    padding: 1.5rem;
+  }
+
+  .chart-container {
+    height: 250px !important;
+  }
+}
+
+/* Chart Loading States */
+.chart-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 0.75rem;
+
+  .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #e5e7eb;
+    border-top: 3px solid #2563eb;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+/* Chart Tooltips */
+.chart-tooltip {
+  background: rgba(0, 0, 0, 0.9) !important;
+  border: 1px solid rgba(37, 99, 235, 0.3) !important;
+  border-radius: 8px !important;
+  padding: 8px 12px !important;
+  font-size: 12px !important;
+  color: white !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* Chart Legend Styling */
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 0.5rem;
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+
+    .legend-color {
+      width: 12px;
+      height: 12px;
+      border-radius: 2px;
+    }
+  }
+}
+
+/* Performance optimizations for charts */
+.chart-container {
+  will-change: transform;
+  transform: translateZ(0);
+}
+
+/* Chart data update animations */
+.chart-data-update {
+  animation: dataUpdate 0.5s ease-in-out;
+}
+
+@keyframes dataUpdate {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Chart interaction feedback */
+.chart-interactive {
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: scale(1.02);
+  }
+
+  &:active {
+    transform: scale(0.98);
+  }
+}
+
+/* Chart accessibility improvements */
+.chart-container {
+  &:focus {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+  }
+}
+
+/* Chart responsive breakpoints */
+@media (max-width: 1024px) {
+  .charts-grid {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .charts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-card {
+    padding: 1rem;
+  }
+
+  .chart-container {
+    height: 200px !important;
+  }
+}
+
+/* Chart theme variations */
+.chart-card {
+  &.primary-theme {
+    &::before {
+      background: linear-gradient(90deg, 
+        transparent, 
+        rgba(37, 99, 235, 0.4), 
+        transparent);
+    }
+  }
+
+  &.success-theme {
+    &::before {
+      background: linear-gradient(90deg, 
+        transparent, 
+        rgba(16, 185, 129, 0.4), 
+        transparent);
+    }
+  }
+
+  &.warning-theme {
+    &::before {
+      background: linear-gradient(90deg, 
+        transparent, 
+        rgba(245, 158, 11, 0.4), 
+        transparent);
+    }
+  }
+}
+
+/* Chart loading skeleton */
+.chart-skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: 0.75rem;
+  height: 300px;
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+

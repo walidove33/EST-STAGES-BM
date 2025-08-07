@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef , ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';  // ← ajoutez NgForm ici
 import { RouterModule } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { StageService } from '../../../services/stage.service';
@@ -14,6 +14,9 @@ import {
   EncadrantDetails 
 } from '../../../models/stage.model';
 import { User } from '../../../models/user.model';
+
+
+
 
 @Component({
   selector: 'app-planification-management',
@@ -30,6 +33,12 @@ export class PlanificationManagementComponent implements OnInit, OnDestroy {
   departements: Array<{ id: number; nom: string }> = [];
   classGroups: Array<{ id: number; nom: string }> = [];
   anneesScolaires: Array<{ id: number; libelle: string }> = [];
+
+  planifDate = '';
+  planifEncadrantId = 0;
+  planifDepId         = 0;
+  planifClasseGroupeId= 0;
+  planifAnneeId       = 0;
 
   newPlanification = {
     dateSoutenance: '',
@@ -57,6 +66,12 @@ export class PlanificationManagementComponent implements OnInit, OnDestroy {
   creating = false;
   showDetailModal = false;
 
+
+  @ViewChild('planifForm', { static: false })
+  planifForm!: NgForm;
+
+  // Indicateur de création en cours
+
   constructor(
     private stageService: StageService,
     private userService: UserService,
@@ -67,6 +82,8 @@ export class PlanificationManagementComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.notificationService.info('Gestion Planifications', 'Initialisation de la gestion des soutenances...');
     this.loadData();
+    this.loadReferenceData(); // Encadrants, départements, classes, années
+
   }
 
   ngOnDestroy(): void {
@@ -144,8 +161,16 @@ export class PlanificationManagementComponent implements OnInit, OnDestroy {
       });
   }
 
+
   createPlanification(): void {
-    if (!this.validatePlanificationForm()) {
+    console.log('⚙️ createPlanification called', this.newPlanification);
+
+    // Vérification du formulaire
+    if (this.planifForm.invalid) {
+      this.notificationService.error(
+        'Formulaire invalide',
+        'Veuillez remplir tous les champs obligatoires'
+      );
       return;
     }
 
@@ -153,19 +178,45 @@ export class PlanificationManagementComponent implements OnInit, OnDestroy {
     this.stageService.createPlanification(this.newPlanification)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (planification) => {
+        next: planif => {
           this.creating = false;
-          this.resetPlanificationForm();
-          this.loadPlanifications();
+          this.notificationService.success(
+            'Succès',
+            `Planification créée pour le ${planif.dateSoutenance}`
+          );
+          // Reset form et payload
+          this.planifForm.resetForm();
+          this.newPlanification = {
+            dateSoutenance: '',
+            encadrant:    { id: 0 },
+            departement:  { id: 0 },
+            classeGroupe: { id: 0 },
+            anneeScolaire:{ id: 0 }
+          };
           this.cdr.detectChanges();
         },
-        error: (error) => {
+        error: err => {
           this.creating = false;
-          console.error('Erreur création planification:', error);
+          console.error('Erreur création planification:', err);
           this.cdr.detectChanges();
         }
       });
   }
+
+
+
+  private resetForm(): void {
+    this.newPlanification = {
+      dateSoutenance: '',
+      encadrant: { id: 0 },
+      departement: { id: 0 },
+      classeGroupe: { id: 0 },
+      anneeScolaire: { id: 0 }
+    };
+    this.planifForm.resetForm();
+  }
+
+
 
   viewPlanificationDetails(planification: PlanificationSoutenanceResponse): void {
     this.selectedPlanification = planification;

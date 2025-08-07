@@ -23,4 +23,36 @@ public class StageDto {
     private LocalDate dateFin;
     private EtatStage etat;
     private LocalDateTime dateCreation;
+    private RapportDto rapport;
+
+
+    public StageDto(
+            Long id,
+            String sujet,
+            String entreprise,
+            String adresseEntreprise,
+            String telephoneEntreprise,
+            String representantEntreprise,
+            String filiere,
+            LocalDate dateDebut,
+            LocalDate dateFin,
+            EtatStage etat,
+            LocalDateTime dateCreation
+    ) {
+        this.id = id;
+        this.sujet = sujet;
+        this.entreprise = entreprise;
+        this.adresseEntreprise = adresseEntreprise;
+        this.telephoneEntreprise = telephoneEntreprise;
+        this.representantEntreprise = representantEntreprise;
+        this.filiere = filiere;
+        this.dateDebut = dateDebut;
+        this.dateFin = dateFin;
+        this.etat = etat;
+        this.dateCreation = dateCreation;
+    }
+
+
 }
+
+

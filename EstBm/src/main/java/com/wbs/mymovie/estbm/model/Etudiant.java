@@ -1,5 +1,6 @@
 package com.wbs.mymovie.estbm.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.wbs.mymovie.estbm.model.enums.Role;
 import jakarta.persistence.*;
@@ -58,10 +59,12 @@ public class Etudiant {
 
     @ManyToOne
     @JoinColumn(name = "departement_id")
+    @JsonBackReference      // <-- ignore le departement côté étudiant
     private Departement departement;
 
     @ManyToOne
     @JoinColumn(name = "classe_groupe_id")
+    @JsonBackReference
     private ClasseGroupe classeGroupe;
 
     @ManyToOne

@@ -1,6 +1,7 @@
 package com.wbs.mymovie.estbm.model;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
@@ -18,6 +19,7 @@ public class ClasseGroupe {
     private String nom;  // ex: Groupe1, Groupe2...
 
     @OneToMany(mappedBy = "classeGroupe")
+    @JsonManagedReference
     private List<Etudiant> etudiants;
 
 

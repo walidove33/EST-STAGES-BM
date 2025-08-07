@@ -252,6 +252,8 @@ export interface Stage {
     prenom: string;
     email: string;
   };
+    rapport?: Rapport;   // ← ici
+
   encadrant?: {
     id: number;
     nom: string;

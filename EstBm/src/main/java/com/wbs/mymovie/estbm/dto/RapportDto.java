@@ -54,4 +54,5 @@ public class RapportDto {
         this.stageId = stageId;
         this.cloudinaryUrl = cloudinaryUrl;
     }
-}
+
+    }

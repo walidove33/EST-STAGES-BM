@@ -41,4 +41,6 @@ public class Encadrant {
     @ManyToOne
     @JoinColumn(name = "departement_id")
     private Departement departement;
+
+
 }

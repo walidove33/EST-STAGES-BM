@@ -1,5 +1,6 @@
 package com.wbs.mymovie.estbm.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -31,5 +32,6 @@ public class DetailSoutenance {
     private Etudiant etudiant;
 
     @ManyToOne
+    @JsonIgnore
     private PlanificationSoutenance planification;
 }

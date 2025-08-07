@@ -1160,16 +1160,18 @@ import { CommentaireRapport } from "../models/stage.model"
 import { catchError, map, tap, switchMap, finalize } from "rxjs/operators"
 import { GroupAssignmentRequest } from "../models/stage.model"
 
+
+
 @Injectable({
   providedIn: "root",
 })
 export class StageService {
   private baseUrl = `${environment.apiUrl}/stages/stages`
-  private adminUrl = "http://localhost:8081/stages/admin"
+  private adminUrl = "http://localhost:8081/stages/admin";
   private encadrantUrl = `${environment.apiUrl}/stages/encadrants`
   private etudUrl = "http://localhost:8081/stages/etudiants"
   private rapportUrl = "http://localhost:8081/stages/rapports"
-  private planifUrl = `${environment.apiUrl}/stages/planification`
+  private planifUrl = "http://localhost:8081/stages/planification"
 
   constructor(
     private http: HttpClient,
@@ -1179,30 +1181,44 @@ export class StageService {
 
   // ==================== SOUTENANCE METHODS ====================
 
-  createPlanification(planif: {
+ createPlanification(planif: {
     dateSoutenance: string;
     encadrant: { id: number };
     departement: { id: number };
     classeGroupe: { id: number };
     anneeScolaire: { id: number };
   }): Observable<PlanificationSoutenanceResponse> {
-    const loadingId = this.notificationService.loading(
-      'Création de la planification...', 
-      'Configuration des soutenances'
-    )
+    // Aplatir l'objet pour correspondre à PlanificationRequest côté Java
+    const payload = {
+      dateSoutenance:  planif.dateSoutenance,
+      encadrantId:     planif.encadrant.id,
+      departementId:   planif.departement.id,
+      classeGroupeId:  planif.classeGroupe.id,
+      anneeScolaireId: planif.anneeScolaire.id
+    };
 
-    return this.http.post<PlanificationSoutenanceResponse>(
-      this.planifUrl,
-      planif
+
+        // Récupérer le token pour l'autorisation
+    const token = this.authService.getToken();
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+
+  const loadingId = this.notificationService.loading(
+    'Création de la planification...', 
+    'Configuration des soutenances'
+  );
+
+   return this.http.post<PlanificationSoutenanceResponse>(
+      `${this.planifUrl}/create`,
+      payload,
+      { headers }
     ).pipe(
       switchMap(response => timer(600).pipe(switchMap(() => [response]))),
-      
-      tap((response) => {
+      tap(response => {
         this.notificationService.operationSuccess(
           loadingId,
           'Planification créée',
           `Planification pour le ${response.dateSoutenance} créée avec succès`
-        )
+        );
       }),
       
       catchError((error) => {
@@ -1217,32 +1233,62 @@ export class StageService {
   }
 
   getAllPlanifications(): Observable<PlanificationSoutenanceResponse[]> {
-    const loadingId = this.notificationService.loading(
-      'Chargement des planifications...', 
-      'Récupération de toutes les planifications'
-    )
+  const loadingId = this.notificationService.loading(
+    'Chargement des planifications...', 
+    'Récupération de toutes les planifications'
+  )
 
-    return this.http.get<PlanificationSoutenanceResponse[]>(this.planifUrl).pipe(
-      switchMap(planifs => timer(400).pipe(switchMap(() => [planifs]))),
-      
-      tap((planifs) => {
-        this.notificationService.operationSuccess(
-          loadingId,
-          'Planifications',
-          `${planifs.length} planification(s) trouvée(s)`
-        )
-      }),
-      
-      catchError((error) => {
-        this.notificationService.operationError(
-          loadingId,
-          'Planifications',
-          'Impossible de charger les planifications'
-        )
-        return this.handleError(error)
-      })
-    )
-  }
+ return this.http.get<PlanificationSoutenanceResponse[]>(
+    `${this.planifUrl}/all`).pipe(
+    switchMap(planifs => timer(400).pipe(switchMap(() => [planifs]))),
+    tap((planifs) => {
+      this.notificationService.operationSuccess(
+        loadingId,
+        'Planifications',
+        `${planifs.length} planification(s) trouvée(s)`
+      )
+    }),
+    catchError((error) => {
+      this.notificationService.operationError(
+        loadingId,
+        'Planifications',
+        'Impossible de charger les planifications'
+      )
+      return this.handleError(error)
+    })
+  )
+}
+
+
+
+updateSoutenanceDetail(detailId: number, detail: DetailSoutenance): Observable<DetailSoutenance> {
+  const loadingId = this.notificationService.loading(
+    'Mise à jour du créneau...', 
+    'Modification du créneau de soutenance'
+  )
+
+  return this.http.put<DetailSoutenance>(
+    `${this.planifUrl}/details/${detailId}`,
+    detail
+  ).pipe(
+    switchMap(updatedDetail => timer(500).pipe(switchMap(() => [updatedDetail]))),
+    tap(() => {
+      this.notificationService.operationSuccess(
+        loadingId,
+        'Créneau mis à jour',
+        'Les modifications ont été enregistrées'
+      )
+    }),
+    catchError((error) => {
+      this.notificationService.operationError(
+        loadingId,
+        'Mise à jour',
+        'Impossible de modifier le créneau'
+      )
+      return this.handleError(error)
+    })
+  )
+}
 
   getPlanificationsByEncadrant(encadrantId: number): Observable<PlanificationSoutenanceResponse[]> {
     const loadingId = this.notificationService.loading(

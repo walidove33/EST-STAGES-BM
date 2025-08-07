@@ -57,6 +57,8 @@ public class SecurityConfig {
                         // 1) Auth public
                         .requestMatchers(HttpMethod.POST, "/stages/auth/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/stages/auth/refresh").permitAll()
+                        .requestMatchers("/stages/planification/**").hasRole("ADMIN") // ADD THIS LINE
+
 
                         // 2) ADMIN only
                         .requestMatchers("/stages/admin/**").hasRole("ADMIN")

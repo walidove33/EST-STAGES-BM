@@ -26,6 +26,7 @@
 
 package com.wbs.mymovie.estbm.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 import java.util.List;
@@ -42,6 +43,7 @@ public class Departement {
     @Column(nullable = false, unique = true)
     private String nom;
     @OneToMany(mappedBy = "departement")
+    @JsonManagedReference   // <-- sérialise la liste d’étudiants, ignore leur backref
     private List<Etudiant> etudiants;
     @OneToMany(mappedBy = "departement")
     private List<Encadrant> encadrants;

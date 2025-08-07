@@ -93,10 +93,7 @@
 // src/main/java/com/wbs/mymovie/estbm/controller/AdminController.java
 package com.wbs.mymovie.estbm.controller;
 
-import com.wbs.mymovie.estbm.dto.AssignmentDto;
-import com.wbs.mymovie.estbm.dto.GroupAssignmentRequest;
-import com.wbs.mymovie.estbm.dto.ReferenceDto;
-import com.wbs.mymovie.estbm.dto.RegisterRequest;
+import com.wbs.mymovie.estbm.dto.*;
 import com.wbs.mymovie.estbm.model.Stage;
 import com.wbs.mymovie.estbm.model.Utilisateur;
 import com.wbs.mymovie.estbm.model.enums.Role;
@@ -213,9 +210,14 @@ public class AdminController {
         return ResponseEntity.ok(utilisateurService.getAllUsers());
     }
 
+//    @GetMapping("/stages")
+//    public ResponseEntity<List<Stage>> getAllStages() {
+//        return ResponseEntity.ok(stageService.getAllStages());
+//    }
+
     @GetMapping("/stages")
-    public ResponseEntity<List<Stage>> getAllStages() {
-        return ResponseEntity.ok(stageService.getAllStages());
+    public List<StageDto> getAllStages() {
+        return stageService.findAllDtos();
     }
 
     @GetMapping("/users/role/{role}")

@@ -1,614 +1,299 @@
-// // import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
-// // import { CommonModule } from '@angular/common';
-// // import { RouterModule, Router } from '@angular/router';
-// // import { AuthService } from '../../../services/auth.service';
-// // import { User } from '../../../models/user.model';
-
-// // @Component({
-// //   selector: 'app-navbar',
-// //   standalone: true,
-// //   imports: [CommonModule, RouterModule],
-// //   templateUrl: './navbar.component.html',
-// //   styleUrls: ['./navbar.component.scss']
-// // })
-// // export class NavbarComponent implements OnInit {
-// //   @ViewChild('navbar', { static: true }) navbar!: ElementRef;
-  
-// //   currentUser: User | null = null;
-// //   mobileMenuOpen = false;
-// //   userMenuOpen = false;
-// //   isScrolled = false;
-
-// //   constructor(
-// //     private authService: AuthService,
-// //     private router: Router
-// //   ) {}
-
-// //   ngOnInit(): void {
-// //     this.authService.currentUser$.subscribe((user: User | null) => {
-// //       this.currentUser = user;
-// //     });
-// //   }
-
-// //   @HostListener('window:scroll', ['$event'])
-// //   onWindowScroll(): void {
-// //     this.isScrolled = window.pageYOffset > 10;
-// //   }
-
-// //   @HostListener('document:click', ['$event'])
-// //   onDocumentClick(event: Event): void {
-// //     const target = event.target as HTMLElement;
-// //     if (!target.closest('.navbar-user') && !target.closest('.navbar-nav')) {
-// //       this.closeMenus();
-// //     }
-// //   }
-
-// //   toggleMobileMenu(): void {
-// //     this.mobileMenuOpen = !this.mobileMenuOpen;
-// //     if (this.mobileMenuOpen) {
-// //       this.userMenuOpen = false;
-// //       document.body.style.overflow = 'hidden';
-// //     } else {
-// //       document.body.style.overflow = '';
-// //     }
-// //   }
-
-// //   toggleUserMenu(): void {
-// //     this.userMenuOpen = !this.userMenuOpen;
-// //     if (this.userMenuOpen) {
-// //       this.mobileMenuOpen = false;
-// //     }
-// //   }
-
-// //   closeMenus(): void {
-// //     this.mobileMenuOpen = false;
-// //     this.userMenuOpen = false;
-// //     document.body.style.overflow = '';
-// //   }
-
-// //   getRoleLabel(role?: string): string {
-// //     const roleLabels: { [key: string]: string } = {
-// //       'ETUDIANT': 'Étudiant',
-// //       'ENCADRANT': 'Encadrant',
-// //       'ADMIN': 'Administrateur'
-// //     };
-// //     return roleLabels[role || ''] || '';
-// //   }
-
-// //   getRoleBadgeColor(role?: string): string {
-// //     const colors: { [key: string]: string } = {
-// //       'ETUDIANT': 'student',
-// //       'ENCADRANT': 'supervisor',
-// //       'ADMIN': 'admin'
-// //     };
-// //     return colors[role || ''] || 'student';
-// //   }
-
-// //   getDashboardRoute(): string {
-// //     switch (this.currentUser?.role) {
-// //       case 'ADMIN':
-// //         return '/admin/dashboard';
-// //       case 'ENCADRANT':
-// //         return '/encadrant/dashboard';
-// //       case 'ETUDIANT':
-// //       default:
-// //         return '/student/dashboard';
-// //     }
-// //   }
-
-// //   getInitials(user: User | null): string {
-// //     if (!user) return '';
-// //     const firstInitial = user.prenom?.[0]?.toUpperCase() || '';
-// //     const lastInitial = user.nom?.[0]?.toUpperCase() || '';
-// //     return `${firstInitial}${lastInitial}`;
-// //   }
-
-// //   logout(event: Event): void {
-// //     event.preventDefault();
-// //     this.closeMenus();
-// //     this.authService.logout();
-// //     this.router.navigate(['/login']);
-// //   }
-// // }
-
-
-// import { Component, OnInit, HostListener, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-// import { RouterModule, Router } from '@angular/router';
-// import { AuthService } from '../../../services/auth.service';
-// import { User } from '../../../models/user.model';
-
-// @Component({
-//   selector: 'app-navbar',
-//   standalone: true,
-//   imports: [CommonModule, RouterModule],
-//   templateUrl: './navbar.component.html',
-//   styleUrls: ['./navbar.component.scss']
-// })
-// export class NavbarComponent implements OnInit, AfterViewInit {
-//   @ViewChild('navbar', { static: true }) navbar!: ElementRef;
-//   @ViewChild('userDropdown', { static: false }) userDropdown!: ElementRef;
-  
-//   currentUser: User | null = null;
-//   mobileMenuOpen = false;
-//   userMenuOpen = false;
-//   isScrolled = false;
-//   isLoading = false;
-
-//   constructor(
-//     private authService: AuthService,
-//     private router: Router
-//   ) {}
-
-//   ngOnInit(): void {
-//     this.authService.currentUser$.subscribe((user: User | null) => {
-//       this.currentUser = user;
-//     });
-//   }
-
-//   ngAfterViewInit(): void {
-//     // Add smooth scroll behavior
-//     this.addScrollBehavior();
-//   }
-
-//   @HostListener('window:scroll', ['$event'])
-//   onWindowScroll(): void {
-//     const scrollPosition = window.pageYOffset;
-//     this.isScrolled = scrollPosition > 20;
-    
-//     // Add parallax effect to navbar
-//     if (this.navbar?.nativeElement) {
-//       const navbar = this.navbar.nativeElement;
-//       navbar.style.transform = `translateY(${scrollPosition * 0.1}px)`;
-//     }
-//   }
-
-//   @HostListener('document:click', ['$event'])
-//   onDocumentClick(event: Event): void {
-//     const target = event.target as HTMLElement;
-//     if (!target.closest('.navbar-user') && !target.closest('.navbar-navigation')) {
-//       this.closeMenus();
-//     }
-//   }
-
-//   @HostListener('window:resize', ['$event'])
-//   onWindowResize(): void {
-//     if (window.innerWidth > 768) {
-//       this.mobileMenuOpen = false;
-//       document.body.style.overflow = '';
-//     }
-//   }
-
-//   private addScrollBehavior(): void {
-//     // Smooth scroll for navigation links
-//     const links = this.navbar?.nativeElement?.querySelectorAll('a[href^="#"]');
-//     links?.forEach((link: HTMLElement) => {
-//       link.addEventListener('click', (e) => {
-//         e.preventDefault();
-//         const target = document.querySelector(link.getAttribute('href') || '');
-//         if (target) {
-//           target.scrollIntoView({ behavior: 'smooth' });
-//         }
-//       });
-//     });
-//   }
-
-//   toggleMobileMenu(): void {
-//     this.mobileMenuOpen = !this.mobileMenuOpen;
-//     if (this.mobileMenuOpen) {
-//       this.userMenuOpen = false;
-//       document.body.style.overflow = 'hidden';
-//       // Add staggered animation to menu items
-//       this.animateMenuItems();
-//     } else {
-//       document.body.style.overflow = '';
-//     }
-//   }
-
-//   toggleUserMenu(): void {
-//     this.userMenuOpen = !this.userMenuOpen;
-//     if (this.userMenuOpen) {
-//       this.mobileMenuOpen = false;
-//       // Add entrance animation to dropdown
-//       if (this.userDropdown?.nativeElement) {
-//         this.userDropdown.nativeElement.style.animation = 'dropdownSlideIn 0.3s ease-out';
-//       }
-//     }
-//   }
-
-//   closeMenus(): void {
-//     this.mobileMenuOpen = false;
-//     this.userMenuOpen = false;
-//     document.body.style.overflow = '';
-//   }
-
-//   private animateMenuItems(): void {
-//     const menuItems = document.querySelectorAll('.nav-link');
-//     menuItems.forEach((item, index) => {
-//       (item as HTMLElement).style.animationDelay = `${index * 0.1}s`;
-//       item.classList.add('animate-slide-in');
-//     });
-//   }
-
-//   getRoleLabel(role?: string): string {
-//     const roleLabels: { [key: string]: string } = {
-//       'ETUDIANT': 'Étudiant',
-//       'ENCADRANT': 'Encadrant',
-//       'ADMIN': 'Administrateur'
-//     };
-//     return roleLabels[role || ''] || '';
-//   }
-
-//   getRoleBadgeColor(role?: string): string {
-//     const colors: { [key: string]: string } = {
-//       'ETUDIANT': 'student',
-//       'ENCADRANT': 'supervisor',
-//       'ADMIN': 'admin'
-//     };
-//     return colors[role || ''] || 'student';
-//   }
-
-//   getDashboardRoute(): string {
-//     switch (this.currentUser?.role) {
-//       case 'ADMIN':
-//         return '/admin/dashboard';
-//       case 'ENCADRANT':
-//         return '/encadrant/dashboard';
-//       case 'ETUDIANT':
-//       default:
-//         return '/student/dashboard';
-//     }
-//   }
-
-//   getInitials(user: User | null): string {
-//     if (!user) return '';
-//     const firstInitial = user.prenom?.[0]?.toUpperCase() || '';
-//     const lastInitial = user.nom?.[0]?.toUpperCase() || '';
-//     return `${firstInitial}${lastInitial}`;
-//   }
-
-//   getFullName(user: User | null): string {
-//     if (!user) return '';
-//     return `${user.prenom || ''} ${user.nom || ''}`.trim();
-//   }
-
-//   logout(event: Event): void {
-//     event.preventDefault();
-//     this.isLoading = true;
-//     this.closeMenus();
-    
-//     // Add loading animation
-//     setTimeout(() => {
-//       this.authService.logout();
-//       this.router.navigate(['/login']);
-//       this.isLoading = false;
-//     }, 800);
-//   }
-
-//   // Navigation helpers
-//   navigateWithAnimation(route: string): void {
-//     this.closeMenus();
-//     // Add page transition effect
-//     document.body.style.opacity = '0.8';
-//     setTimeout(() => {
-//       this.router.navigate([route]);
-//       document.body.style.opacity = '1';
-//     }, 200);
-//   }
-// }
-
-
-// import { Component, OnInit, HostListener, ViewChild, ElementRef } from '@angular/core';
-// import { CommonModule } from '@angular/common';
-// import { RouterModule, Router } from '@angular/router';
-// import { AuthService } from '../../../services/auth.service';
-// import { User } from '../../../models/user.model';
-
-// @Component({
-//   selector: 'app-navbar',
-//   standalone: true,
-//   imports: [CommonModule, RouterModule],
-//   templateUrl: './navbar.component.html',
-//   styleUrls: ['./navbar.component.scss']
-// })
-// export class NavbarComponent implements OnInit {
-//   @ViewChild('navbar', { static: true }) navbar!: ElementRef;
-  
-//   currentUser: User | null = null;
-//   mobileMenuOpen = false;
-//   userMenuOpen = false;
-//   isScrolled = false;
-
-//   constructor(
-//     private authService: AuthService,
-//     private router: Router
-//   ) {}
-
-//   ngOnInit(): void {
-//     this.authService.currentUser$.subscribe((user: User | null) => {
-//       this.currentUser = user;
-//     });
-//   }
-
-//   @HostListener('window:scroll', ['$event'])
-//   onWindowScroll(): void {
-//     this.isScrolled = window.pageYOffset > 10;
-//   }
-
-//   @HostListener('document:click', ['$event'])
-//   onDocumentClick(event: Event): void {
-//     const target = event.target as HTMLElement;
-//     if (!target.closest('.navbar-user') && !target.closest('.navbar-nav')) {
-//       this.closeMenus();
-//     }
-//   }
-
-//   toggleMobileMenu(): void {
-//     this.mobileMenuOpen = !this.mobileMenuOpen;
-//     if (this.mobileMenuOpen) {
-//       this.userMenuOpen = false;
-//       document.body.style.overflow = 'hidden';
-//     } else {
-//       document.body.style.overflow = '';
-//     }
-//   }
-
-//   toggleUserMenu(): void {
-//     this.userMenuOpen = !this.userMenuOpen;
-//     if (this.userMenuOpen) {
-//       this.mobileMenuOpen = false;
-//     }
-//   }
-
-//   closeMenus(): void {
-//     this.mobileMenuOpen = false;
-//     this.userMenuOpen = false;
-//     document.body.style.overflow = '';
-//   }
-
-//   getRoleLabel(role?: string): string {
-//     const roleLabels: { [key: string]: string } = {
-//       'ETUDIANT': 'Étudiant',
-//       'ENCADRANT': 'Encadrant',
-//       'ADMIN': 'Administrateur'
-//     };
-//     return roleLabels[role || ''] || '';
-//   }
-
-//   getRoleBadgeColor(role?: string): string {
-//     const colors: { [key: string]: string } = {
-//       'ETUDIANT': 'student',
-//       'ENCADRANT': 'supervisor',
-//       'ADMIN': 'admin'
-//     };
-//     return colors[role || ''] || 'student';
-//   }
-
-//   getDashboardRoute(): string {
-//     switch (this.currentUser?.role) {
-//       case 'ADMIN':
-//         return '/admin/dashboard';
-//       case 'ENCADRANT':
-//         return '/encadrant/dashboard';
-//       case 'ETUDIANT':
-//       default:
-//         return '/student/dashboard';
-//     }
-//   }
-
-//   getInitials(user: User | null): string {
-//     if (!user) return '';
-//     const firstInitial = user.prenom?.[0]?.toUpperCase() || '';
-//     const lastInitial = user.nom?.[0]?.toUpperCase() || '';
-//     return `${firstInitial}${lastInitial}`;
-//   }
-
-//   logout(event: Event): void {
-//     event.preventDefault();
-//     this.closeMenus();
-//     this.authService.logout();
-//     this.router.navigate(['/login']);
-//   }
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-import { Component, OnInit, HostListener, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener, ElementRef, ViewChild, ChangeDetectionStrategy } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+import { Subject, takeUntil, filter } from 'rxjs';
+import { trigger, state, style, transition, animate, keyframes } from '@angular/animations';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
 import { User } from '../../../models/user.model';
 
 @Component({
   selector: 'app-navbar',
-  standalone: true,
-  imports: [CommonModule, RouterModule],
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.scss']
+  styleUrls: ['./navbar.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CommonModule, RouterModule],
+  standalone: true,
+  animations: [
+    // Mobile menu animations
+    trigger('slideInOut', [
+      state('closed', style({
+        transform: 'translateX(-100%)',
+        opacity: 0
+      })),
+      state('open', style({
+        transform: 'translateX(0)',
+        opacity: 1
+      })),
+      transition('closed <=> open', [
+        animate('0.3s cubic-bezier(0.4, 0, 0.2, 1)')
+      ])
+    ]),
+    
+    // User dropdown animations
+    trigger('fadeInOut', [
+      state('void', style({
+        opacity: 0,
+        transform: 'translateY(-10px) scale(0.95)'
+      })),
+      state('*', style({
+        opacity: 1,
+        transform: 'translateY(0) scale(1)'
+      })),
+      transition('void <=> *', [
+        animate('0.2s cubic-bezier(0.4, 0, 0.2, 1)')
+      ])
+    ]),
+    
+    // Hamburger menu animations
+    trigger('hamburgerAnimation', [
+      state('closed', style({})),
+      state('open', style({})),
+      transition('closed => open', [
+        animate('0.3s ease-in-out', keyframes([
+          style({ transform: 'rotate(0deg)', offset: 0 }),
+          style({ transform: 'rotate(45deg)', offset: 0.5 }),
+          style({ transform: 'rotate(45deg)', offset: 1 })
+        ]))
+      ]),
+      transition('open => closed', [
+        animate('0.3s ease-in-out', keyframes([
+          style({ transform: 'rotate(45deg)', offset: 0 }),
+          style({ transform: 'rotate(0deg)', offset: 0.5 }),
+          style({ transform: 'rotate(0deg)', offset: 1 })
+        ]))
+      ])
+    ]),
+    
+    // Active link indicator
+    trigger('activeLink', [
+      state('inactive', style({
+        transform: 'scaleX(0)',
+        opacity: 0
+      })),
+      state('active', style({
+        transform: 'scaleX(1)',
+        opacity: 1
+      })),
+      transition('inactive <=> active', [
+        animate('0.3s cubic-bezier(0.4, 0, 0.2, 1)')
+      ])
+    ]),
+    
+    // Brand logo hover animation
+    trigger('logoHover', [
+      state('normal', style({
+        transform: 'scale(1) rotate(0deg)'
+      })),
+      state('hovered', style({
+        transform: 'scale(1.1) rotate(5deg)'
+      })),
+      transition('normal <=> hovered', [
+        animate('0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)')
+      ])
+    ])
+  ]
 })
-export class NavbarComponent implements OnInit, AfterViewInit {
-  @ViewChild('navbar', { static: true }) navbar!: ElementRef;
-  @ViewChild('userDropdown', { static: false }) userDropdown!: ElementRef;
+export class NavbarComponent implements OnInit, OnDestroy {
+  @ViewChild('navbar') navbar!: ElementRef;
+  
+  private destroy$ = new Subject<void>();
   
   currentUser: User | null = null;
+  isScrolled = false;
   mobileMenuOpen = false;
   userMenuOpen = false;
-  isScrolled = false;
   isLoading = false;
+  logoHoverState = 'normal';
+  
+  // Animation states
+  mobileMenuState = 'closed';
+  userDropdownState = 'void';
+  hamburgerState = 'closed';
 
   constructor(
-    private authService: AuthService,
-    private router: Router
+    public router: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
-    this.authService.currentUser$.subscribe((user: User | null) => {
+    this.authService.currentUser$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(user => {
       this.currentUser = user;
     });
+
+    // Track route changes for active link highlighting
+    this.router.events
+      .pipe(
+        filter(event => event instanceof NavigationEnd),
+        takeUntil(this.destroy$)
+      )
+      .subscribe(() => {
+        this.updateActiveLink();
+      });
   }
 
-  ngAfterViewInit(): void {
-    // Add smooth scroll behavior
-    this.addScrollBehavior();
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
-  @HostListener('window:scroll', ['$event'])
+  @HostListener('window:scroll')
   onWindowScroll(): void {
-    const scrollPosition = window.pageYOffset;
-    this.isScrolled = scrollPosition > 20;
-    
-    // Add parallax effect to navbar
-    if (this.navbar?.nativeElement) {
-      const navbar = this.navbar.nativeElement;
-      navbar.style.transform = `translateY(${scrollPosition * 0.1}px)`;
-    }
+    this.isScrolled = window.scrollY > 10;
   }
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event): void {
     const target = event.target as HTMLElement;
-    if (!target.closest('.navbar-user') && !target.closest('.navbar-navigation')) {
+    if (!this.navbar.nativeElement.contains(target)) {
       this.closeMenus();
     }
   }
 
-  @HostListener('window:resize', ['$event'])
-  onWindowResize(): void {
-    if (window.innerWidth > 768) {
-      this.mobileMenuOpen = false;
-      document.body.style.overflow = '';
+  @HostListener('window:keydown', ['$event'])
+  onKeyDown(event: KeyboardEvent): void {
+    // Close menus on Escape key
+    if (event.key === 'Escape') {
+      this.closeMenus();
     }
-  }
-
-  private addScrollBehavior(): void {
-    // Smooth scroll for navigation links
-    const links = this.navbar?.nativeElement?.querySelectorAll('a[href^="#"]');
-    links?.forEach((link: HTMLElement) => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        const target = document.querySelector(link.getAttribute('href') || '');
-        if (target) {
-          target.scrollIntoView({ behavior: 'smooth' });
-        }
-      });
-    });
+    
+    // Handle arrow keys for navigation
+    if (this.userMenuOpen) {
+      this.handleKeyboardNavigation(event);
+    }
   }
 
   toggleMobileMenu(): void {
     this.mobileMenuOpen = !this.mobileMenuOpen;
-    if (this.mobileMenuOpen) {
-      this.userMenuOpen = false;
-      document.body.style.overflow = 'hidden';
-      // Add staggered animation to menu items
-      this.animateMenuItems();
-    } else {
-      document.body.style.overflow = '';
-    }
+    this.mobileMenuState = this.mobileMenuOpen ? 'open' : 'closed';
+    this.hamburgerState = this.mobileMenuOpen ? 'open' : 'closed';
+    
+    // Prevent body scroll when mobile menu is open
+    document.body.style.overflow = this.mobileMenuOpen ? 'hidden' : '';
   }
 
   toggleUserMenu(): void {
     this.userMenuOpen = !this.userMenuOpen;
-    if (this.userMenuOpen) {
-      this.mobileMenuOpen = false;
-      // Add entrance animation to dropdown
-      if (this.userDropdown?.nativeElement) {
-        this.userDropdown.nativeElement.style.animation = 'dropdownSlideIn 0.3s ease-out';
-      }
-    }
+    this.userDropdownState = this.userMenuOpen ? '*' : 'void';
   }
 
   closeMenus(): void {
     this.mobileMenuOpen = false;
     this.userMenuOpen = false;
-    document.body.style.overflow = '';
+    this.mobileMenuState = 'closed';
+    this.userDropdownState = 'void';
+    this.hamburgerState = 'closed';
   }
 
-  private animateMenuItems(): void {
-    const menuItems = document.querySelectorAll('.nav-link');
-    menuItems.forEach((item, index) => {
-      (item as HTMLElement).style.animationDelay = `${index * 0.1}s`;
-      item.classList.add('animate-slide-in');
-    });
+  closeMobileMenu(): void {
+    this.mobileMenuOpen = false;
+    this.mobileMenuState = 'closed';
+    this.hamburgerState = 'closed';
   }
 
-  getRoleLabel(role?: string): string {
-    const roleLabels: { [key: string]: string } = {
-      'ETUDIANT': 'Étudiant',
-      'ENCADRANT': 'Encadrant',
-      'ADMIN': 'Administrateur'
-    };
-    return roleLabels[role || ''] || '';
+  onLogoHover(): void {
+    this.logoHoverState = 'hovered';
   }
 
-  getRoleBadgeColor(role?: string): string {
-    const colors: { [key: string]: string } = {
-      'ETUDIANT': 'student',
-      'ENCADRANT': 'supervisor',
-      'ADMIN': 'admin'
-    };
-    return colors[role || ''] || 'student';
+  onLogoLeave(): void {
+    this.logoHoverState = 'normal';
+  }
+
+  private handleKeyboardNavigation(event: KeyboardEvent): void {
+    const menuItems = document.querySelectorAll('.dropdown-item');
+    const currentIndex = Array.from(menuItems).findIndex(item => 
+      item === document.activeElement
+    );
+
+    switch (event.key) {
+      case 'ArrowDown':
+        event.preventDefault();
+        const nextIndex = (currentIndex + 1) % menuItems.length;
+        (menuItems[nextIndex] as HTMLElement).focus();
+        break;
+      case 'ArrowUp':
+        event.preventDefault();
+        const prevIndex = currentIndex <= 0 ? menuItems.length - 1 : currentIndex - 1;
+        (menuItems[prevIndex] as HTMLElement).focus();
+        break;
+      case 'Enter':
+      case ' ':
+        event.preventDefault();
+        (document.activeElement as HTMLElement).click();
+        break;
+    }
+  }
+
+  private updateActiveLink(): void {
+    // Update active link indicator based on current route
+    const currentRoute = this.router.url;
+    // Implementation for active link highlighting
   }
 
   getDashboardRoute(): string {
-    switch (this.currentUser?.role) {
-      case 'ADMIN':
-        return '/admin/dashboard';
+    if (!this.currentUser) return '/login';
+    
+    switch (this.currentUser.role) {
+      case 'ETUDIANT':
+        return '/student/dashboard';
       case 'ENCADRANT':
         return '/encadrant/dashboard';
-      case 'ETUDIANT':
+      case 'ADMIN':
+        return '/admin/dashboard';
       default:
-        return '/student/dashboard';
+        return '/login';
     }
   }
 
   getInitials(user: User | null): string {
-    if (!user) return '';
-    const firstInitial = user.prenom?.[0]?.toUpperCase() || '';
-    const lastInitial = user.nom?.[0]?.toUpperCase() || '';
-    return `${firstInitial}${lastInitial}`;
+    if (!user) return '?';
+    return `${user.prenom?.charAt(0) || ''}${user.nom?.charAt(0) || ''}`.toUpperCase();
   }
 
   getFullName(user: User | null): string {
-    if (!user) return '';
-    return `${user.prenom || ''} ${user.nom || ''}`.trim();
+    if (!user) return 'Utilisateur';
+    return `${user.prenom} ${user.nom}`;
   }
 
-  logout(event: Event): void {
+  getRoleLabel(role: string | undefined): string {
+    switch (role) {
+      case 'ETUDIANT':
+        return 'Étudiant';
+      case 'ENCADRANT':
+        return 'Encadrant';
+      case 'ADMIN':
+        return 'Administrateur';
+      default:
+        return 'Utilisateur';
+    }
+  }
+
+  getRoleBadgeColor(role: string | undefined): string {
+    switch (role) {
+      case 'ETUDIANT':
+        return 'student';
+      case 'ENCADRANT':
+        return 'encadrant';
+      case 'ADMIN':
+        return 'admin';
+      default:
+        return 'default';
+    }
+  }
+
+  async logout(event: Event): Promise<void> {
     event.preventDefault();
     this.isLoading = true;
-    this.closeMenus();
     
-    // Add loading animation
-    setTimeout(() => {
-      this.authService.logout();
+    try {
+      await this.authService.logout();
       this.router.navigate(['/login']);
+    } catch (error) {
+      console.error('Logout error:', error);
+    } finally {
       this.isLoading = false;
-    }, 800);
-  }
-
-  // Navigation helpers
-  navigateWithAnimation(route: string): void {
-    this.closeMenus();
-    // Add page transition effect
-    document.body.style.opacity = '0.8';
-    setTimeout(() => {
-      this.router.navigate([route]);
-      document.body.style.opacity = '1';
-    }, 200);
+    }
   }
 }

@@ -451,89 +451,26 @@
     </div>
 
     <!-- Main content -->
-    <div *ngIf="!loading" class="dashboard-content">
-      <!-- Statistiques -->
-      <div class="stats-section">
-        <h2 class="section-title animate-slideInLeft">
-          <i class="bi bi-bar-chart-line me-2"></i>
-          Vos statistiques
-        </h2>
-        
-        <div class="stats-grid">
-          <div class="stat-card stat-primary animate-scaleIn">
-            <div class="stat-icon">
-              <i class="bi bi-file-earmark-plus"></i>
-            </div>
-            <div class="stat-content">
-              <div class="stat-value">{{ stats.total }}</div>
-              <div class="stat-label">Demandes totales</div>
-              <div class="stat-progress">
-                <div class="progress-bar" style="width: 100%; background: var(--primary)"></div>
-              </div>
-            </div>
-          </div>
+  
 
-          <div class="stat-card stat-warning animate-scaleIn" style="animation-delay: 0.1s">
-            <div class="stat-icon">
-              <i class="bi bi-clock-history"></i>
-            </div>
-            <div class="stat-content">
-              <div class="stat-value">{{ stats.enAttente }}</div>
-              <div class="stat-label">En attente</div>
-              <div class="stat-progress">
-                <div class="progress-bar" 
-                     [style.width.%]="getProgressPercentage('enAttente')"
-                     style="background: var(--warning)"></div>
-              </div>
-            </div>
-          </div>
 
-          <div class="stat-card stat-success animate-scaleIn" style="animation-delay: 0.2s">
-            <div class="stat-icon">
-              <i class="bi bi-check-circle"></i>
-            </div>
-            <div class="stat-content">
-              <div class="stat-value">{{ stats.valides }}</div>
-              <div class="stat-label">Validés</div>
-              <div class="stat-progress">
-                <div class="progress-bar" 
-                     [style.width.%]="getProgressPercentage('valides')"
-                     style="background: var(--success)"></div>
-              </div>
-            </div>
-          </div>
 
-          <div class="stat-card stat-info animate-scaleIn" style="animation-delay: 0.3s">
-            <div class="stat-icon">
-              <i class="bi bi-briefcase"></i>
-            </div>
-            <div class="stat-content">
-              <div class="stat-value">{{ stats.enCours }}</div>
-              <div class="stat-label">En cours</div>
-              <div class="stat-progress">
-                <div class="progress-bar" 
-                     [style.width.%]="getProgressPercentage('enCours')"
-                     style="background: var(--info)"></div>
-              </div>
-            </div>
-          </div>
 
-          <div class="stat-card stat-accent animate-scaleIn" style="animation-delay: 0.4s">
-            <div class="stat-icon">
-              <i class="bi bi-calendar-check"></i>
-            </div>
-            <div class="stat-content">
-              <div class="stat-value">{{ stats.totalSoutenances }}</div>
-              <div class="stat-label">Soutenances</div>
-              <div class="stat-progress">
-                <div class="progress-bar" 
-                     [style.width.%]="stats.totalSoutenances > 0 ? 100 : 0"
-                     style="background: var(--secondary)"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
       <!-- Contenu principal -->
       <div class="content-grid">
@@ -835,4 +772,3 @@
       </div>
     </div>
   </div>
-</div>

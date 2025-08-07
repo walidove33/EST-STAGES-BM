@@ -1,10 +1,14 @@
 package com.wbs.mymovie.estbm.dto;
 
 
-import lombok.Data;
+import lombok.*;
+
 import java.time.LocalDate;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class PlanificationSoutenanceResponse {
     private Long id;
     private LocalDate dateSoutenance;

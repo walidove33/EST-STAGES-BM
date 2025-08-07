@@ -1,5 +1,6 @@
 package com.wbs.mymovie.estbm.controller;
 
+import com.wbs.mymovie.estbm.dto.PlanificationRequest;
 import com.wbs.mymovie.estbm.dto.PlanificationSoutenanceResponse;
 import com.wbs.mymovie.estbm.dto.SoutenanceEtudiantSlotDto;
 import com.wbs.mymovie.estbm.model.DetailSoutenance;
@@ -20,15 +21,15 @@ public class PlanificationSoutenanceController {
     private final PlanificationSoutenanceService service;
 
     // ADMIN crée une planification
-    @PostMapping
+    @PostMapping("/create")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<PlanificationSoutenanceResponse> create(
-            @RequestBody PlanificationSoutenance planif
+            @RequestBody PlanificationRequest request
     ) {
-        return ResponseEntity.ok(service.createPlanification(planif));
+        return ResponseEntity.ok(service.createPlanification(request));
     }
 
-    @GetMapping
+    @GetMapping("/all")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<PlanificationSoutenanceResponse>> all() {
         return ResponseEntity.ok(service.getAll());

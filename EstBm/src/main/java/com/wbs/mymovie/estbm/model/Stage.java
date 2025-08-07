@@ -1,6 +1,7 @@
 package com.wbs.mymovie.estbm.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.wbs.mymovie.estbm.model.enums.EtatStage;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -48,6 +49,7 @@ public class Stage {
     private String filiere; // filière de l'étudiant
 
     @OneToOne(mappedBy = "stage", fetch = FetchType.LAZY)
+    @JsonManagedReference   // <-- sérialise le rapport, ignore la backref
     private Rapport rapport;
 
 

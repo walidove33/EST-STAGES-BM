@@ -23,9 +23,7 @@ import { User } from '../../../models/user.model';
     RouterModule, 
     NavbarComponent, 
     DataTableComponent, 
-    LoadingComponent,
-    CardComponent,
-    EmptyStateComponent
+    CardComponent
   ],
   templateUrl: './ma-planification.component.html',
   styleUrls: ['./ma-planification.component.scss']

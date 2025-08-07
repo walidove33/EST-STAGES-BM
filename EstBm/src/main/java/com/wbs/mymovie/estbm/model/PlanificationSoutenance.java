@@ -1,5 +1,6 @@
 package com.wbs.mymovie.estbm.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,5 +37,6 @@ public class PlanificationSoutenance {
     private Encadrant encadrant;
 
     @OneToMany(mappedBy = "planification", cascade = CascadeType.ALL)
+    @JsonIgnore // Add this to break the serialization loop
     private List<DetailSoutenance> details;
 }

@@ -513,6 +513,44 @@ public class StageService {
 
 
 
+    public List<StageDto> findAllDtos() {
+        return stageRepository.findAll().stream()
+                .map(this::toDto)
+                .collect(Collectors.toList());
+    }
+
+    private StageDto toDto(Stage s) {
+        StageDto dto = new StageDto();
+        dto.setId(s.getId());
+        dto.setSujet(s.getSujet());
+        // … copy all simple fields …
+        dto.setEntreprise(s.getEntreprise());
+        dto.setAdresseEntreprise(s.getAdresseEntreprise());
+        dto.setTelephoneEntreprise(s.getTelephoneEntreprise());
+        dto.setRepresentantEntreprise(s.getRepresentantEntreprise());
+        dto.setFiliere(s.getFiliere());
+        dto.setDateDebut(s.getDateDebut());
+        dto.setDateFin(s.getDateFin());
+        dto.setEtat(s.getEtat());
+
+        dto.setDateCreation(s.getDateCreation());
+
+        if (s.getRapport() != null) {
+            Rapport r = s.getRapport();
+            RapportDto rd = new RapportDto(
+                    r.getId(),
+                    r.getNomFichier(),
+                    r.getDateDepot(),           // LocalDate
+                    r.getStage().getId(),       // Long stageId
+                    r.getCloudinaryUrl()        // String cloudinaryUrl
+            );
+            dto.setRapport(rd);
+        }
+
+        return dto;
+    }
+
+
 
 
 }
