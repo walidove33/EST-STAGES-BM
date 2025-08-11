@@ -1,0 +1,169 @@
+/* ===================================
+   MAIN LAYOUT - PROFESSIONAL DESIGN
+   Modern layout with sidebar and responsive design
+=================================== */
+
+.main-layout {
+  display: flex;
+  min-height: 100vh;
+  background: linear-gradient(135deg, 
+    var(--neutral-50) 0%, 
+    var(--primary-50) 25%,
+    var(--secondary-50) 75%,
+    var(--neutral-50) 100%);
+  background-attachment: fixed;
+  position: relative;
+  overflow-x: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(circle at 25% 25%, rgba(59, 130, 246, 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 75% 75%, rgba(16, 185, 129, 0.03) 0%, transparent 50%),
+      radial-gradient(circle at 50% 50%, rgba(245, 158, 11, 0.02) 0%, transparent 50%);
+    pointer-events: none;
+    animation: float 30s ease-in-out infinite;
+  }
+}
+
+/* Main Content Area */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  margin-left: 0;
+  transition: margin-left var(--transition-normal);
+  position: relative;
+  z-index: 1;
+
+  &.with-sidebar {
+    margin-left: 280px;
+  }
+}
+
+.content-wrapper {
+  flex: 1;
+  padding: var(--space-8) var(--space-6);
+  min-height: calc(100vh - 140px); /* Account for navbar and footer */
+  
+  /* Content animations */
+  animation: slideInUp var(--duration-500) ease-out;
+}
+
+/* Mobile Backdrop */
+.mobile-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  z-index: var(--z-modal-backdrop);
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--transition-normal);
+
+  &.active {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* Mobile Responsive */
+.main-layout.mobile {
+  .main-content.with-sidebar {
+    margin-left: 0;
+  }
+
+  .content-wrapper {
+    padding: var(--space-4) var(--space-3);
+  }
+}
+
+/* Animations */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  33% {
+    transform: translateY(-10px) rotate(1deg);
+  }
+  66% {
+    transform: translateY(5px) rotate(-1deg);
+  }
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .main-content.with-sidebar {
+    margin-left: 0;
+  }
+}
+
+@media (max-width: 768px) {
+  .content-wrapper {
+    padding: var(--space-4) var(--space-3);
+  }
+}
+
+@media (max-width: 480px) {
+  .content-wrapper {
+    padding: var(--space-3) var(--space-2);
+  }
+}
+
+/* Performance Optimizations */
+.main-layout,
+.main-content,
+.content-wrapper {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .main-layout,
+  .main-content,
+  .content-wrapper {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .main-layout::before {
+    animation: none;
+  }
+}
+
+/* High Contrast Mode */
+@media (prefers-contrast: high) {
+  .main-layout {
+    background: white;
+  }
+
+  .mobile-backdrop {
+    background: rgba(0, 0, 0, 0.8);
+  }
+}
+
+/* Print Styles */
+@media print {
+  .main-layout {
+    background: white;
+  }
+
+  .mobile-backdrop {
+    display: none;
+  }
+}
